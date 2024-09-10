@@ -1,8 +1,5 @@
 #include "core.h"
-#include<SDL_image.h>
-#include<SDL_ttf.h>
-#include<SDL_mixer.h>
-#include<iostream>
+#include "common.h"
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
@@ -68,3 +65,17 @@ bool init() {
 
 	return pass;
 }
+
+void close() {
+	ImGui_ImplSDLRenderer2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
+	SDL_DestroyRenderer(gRenderer);
+	SDL_DestroyWindow(gWindow);
+	SDL_Quit();
+}
+
+
+
+

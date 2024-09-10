@@ -1,19 +1,6 @@
 
-#include<stdio.h>
-#include<SDL.h>
-#include<SDL_image.h>
-#include<SDL_ttf.h>
-#include<SDL_mixer.h>
 
-#include<iostream>
-#include<string>
-#include <functional> 
-
-#include "imgui.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_sdlrenderer2.h"
-
-#include "core.h"
+#include "common.h"
 
 
  //Main code
@@ -34,7 +21,7 @@ int main(int, char**)
         ImFont* BoldFont = io.Fonts->AddFontFromFileTTF("Font/roboto/Roboto-Bold.ttf", 45);
 
 
-       
+
         ImGui::StyleColorsDark();
 
         ImGui_ImplSDL2_InitForSDLRenderer(gWindow, gRenderer);
@@ -49,8 +36,9 @@ int main(int, char**)
 
         style.WindowPadding = ImVec2(30, 25);
         style.ItemSpacing = ImVec2(20, 10);
-        style.ItemInnerSpacing = ImVec2(10, 10);
+        style.ItemInnerSpacing = ImVec2(30, 30);
         style.FramePadding = ImVec2(5, 5);
+
         style.WindowRounding = 15;
         style.FrameRounding = 10;
         
@@ -86,53 +74,37 @@ int main(int, char**)
             ImGui_ImplSDL2_NewFrame();
             ImGui::NewFrame();
 
-            //ImGui::ShowDemoWindow();
-
             ImGuiWindowFlags ImGui_flags = (ImGuiWindowFlags)(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
             static int rows = 3, cols = 3;
-            
-            ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f), 0, ImVec2(0.5f, 0.5f));
 
+            ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f), 0, ImVec2(0.5f, 0.5f));
             ImGui::Begin("Input", 0, ImGui_flags);
             ImGui::SetWindowSize(ImVec2(600, 400));
 
-            // float old_size = ImGui::GetFont()->Scale;
-             //ImGui::GetFont()->Scale *= 1.8;
-            ImGui::PushFont(BoldFont);
-
-            ImGui::Indent(40);
-            ImGui::Text("Welcome to Digital Kolam !");
-            ImGui::Unindent(40);
+            //HEADING
+            ImGui::PushFont(BoldFont); ImGui::Indent(40);
+            ImGui::Text("Welcome to Digital Kolam !"); ImGui::Unindent(40);
             ImGui::SeparatorText("");
             ImGui::PopFont();
-
-            ImGui::Text("Name your Kolam: ");
-
-            ImGui::SameLine();
+            //NAME
+            ImGui::Text("Name your Kolam: ");ImGui::SameLine();
             static char buf1[32] = "";
             int textX = ImGui::GetCursorPosX() + 60;
             ImGui::PushItemWidth(280);
             ImGui::InputText(" ", buf1, 32);
-
-            style.ItemInnerSpacing = ImVec2(30, 30);
-            ImGui::Text("No. of Rows:");
-            ImGui::SameLine();
-
+            //ROWS
+            ImGui::Text("No. of Rows:"); ImGui::SameLine();
             int y = ImGui::GetCursorPosY();
             ImGui::SetCursorPos(ImVec2(textX, y));
-
-
             ImGui::PushItemFlag(ImGuiItemFlags_ButtonRepeat, true);
-            
-
-            float spacing = 40;
             ImGui::PushItemWidth(100);
             if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { rows--; }
+            float spacing = 40;
             ImGui::SameLine(0.0f, spacing);
             ImGui::Text("%d", rows);
             ImGui::SameLine(0.0f, spacing);
             if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { rows++; }
-
+            //COLUMNS
             ImGui::PushID(1);
             ImGui::Text("No. of Columns:");
             ImGui::SameLine();
@@ -145,21 +117,19 @@ int main(int, char**)
             if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { cols++; }
             ImGui::PopItemFlag();
             ImGui::PopID();
-
+            //lETS DRAW BUTTON
             style.FramePadding = ImVec2(30, 10);
-
             BoldFont->Scale *= 0.7;
             ImGui::PushFont(BoldFont);
             ImGui::Indent(164);
             ImGui::Dummy(ImVec2(0, 23));
             ImGui::Button("Let's Draw!");
-
-
             ImGui::PopFont();
             BoldFont->Scale /= 0.7;
             style.FramePadding = ImVec2(5, 5);
 
             ImGui::End();
+            
 
             // Rendering
             ImGui::Render();
@@ -171,14 +141,8 @@ int main(int, char**)
         }
 
         // Cleanup
-        ImGui_ImplSDLRenderer2_Shutdown();
-        ImGui_ImplSDL2_Shutdown();
-        ImGui::DestroyContext();
-
-        SDL_DestroyRenderer(gRenderer);
-        SDL_DestroyWindow(gWindow);
-        SDL_Quit();
-
+        
+        close();
     }
     return 0;
 }
