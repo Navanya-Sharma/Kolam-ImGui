@@ -1,7 +1,13 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\Debug\) contains files shared from another project (example_sdl2_sdlrenderer2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   main.cpp
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(198,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(208,36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(89,10): warning C4189: 'show_demo_window': local variable is initialized but not referenced
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(90,10): warning C4189: 'show_another_window': local variable is initialized but not referenced
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(113,23): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(121,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(122,47): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(122,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(139,37): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(140,47): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(140,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(151,32): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(159,32): warning C4305: '/=': truncation from 'double' to 'float'
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\main.cpp(33,17): warning C4189: 'gFont': local variable is initialized but not referenced
   example_sdl2_sdlrenderer2.vcxproj -> C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\Debug\Kolam.exe
