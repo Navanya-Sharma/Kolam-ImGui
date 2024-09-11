@@ -54,7 +54,8 @@ bool setupImGui() {
     return pass;
 }
 
-void InitialPopUp() {
+void InitialPopUp()
+{
     // Start the Dear ImGui frame
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();

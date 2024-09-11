@@ -2,6 +2,15 @@
 #include "common.h"
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
+SceneManager gSceneManager;
+//PopUpMenu* gPopUpMenu;
+//DrawKolam* gDrawKolam;
+
+ImGuiIO* io = NULL;
+ImFont* gFont = NULL;
+
+ImFont* BoldFont = NULL;
+ImGuiStyle* style = NULL;
 
 bool init() {
 	bool pass = true;
@@ -63,10 +72,35 @@ bool init() {
 		}
 
 		ImGui::CreateContext();
+		//gSceneManager->SceneManager();
 	}
 
 	return pass;
 }
+
+bool initImGui() {
+	bool pass = true;
+	io = &ImGui::GetIO(); (void)io;
+
+	if (!io) { printf("IO not loaded");pass = false; }
+
+	else {
+		io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+		io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+		io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+		io->ConfigDebugIsDebuggerPresent = true;
+		gFont = io->Fonts->AddFontFromFileTTF("Font/roboto/Roboto-Regular.ttf", 30);
+		BoldFont = io->Fonts->AddFontFromFileTTF("Font/roboto/Roboto-Bold.ttf", 45);
+		if (!gFont) { printf("gFont not loaded. Regular Font");pass = false; }
+		if (!BoldFont) { printf("BoldFont not loaded");pass = false; }
+	}
+
+	ImGui_ImplSDL2_InitForSDLRenderer(gWindow, gRenderer);
+	ImGui_ImplSDLRenderer2_Init(gRenderer);
+
+	return pass;
+}
+
 
 void close() {
 	ImGui_ImplSDLRenderer2_Shutdown();
@@ -78,6 +112,21 @@ void close() {
 	SDL_Quit();
 }
 
+bool SceneManager::ChangeScene(std::unique_ptr<Scene> newScene) {
+	if (currentScene != nullptr) 
+		currentScene->~Scene();
+	currentScene = std::move(newScene);
+	return currentScene->Init();
+}
+void SceneManager::Update() {
+	if (currentScene != nullptr)
+		currentScene->Update();
+}
+
+void SceneManager::Render() {
+	if (currentScene != nullptr)
+		currentScene->Render();
+}
 
 
 

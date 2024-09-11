@@ -40,7 +40,10 @@
     <ClCompile Include="core.cpp">
       <Filter>sources</Filter>
     </ClCompile>
-    <ClCompile Include="MyImGui.cpp">
+    <ClCompile Include="PopUpMenu.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawKolam.cpp">
       <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -54,7 +57,10 @@
     <ClInclude Include="common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyImGui.h">
+    <ClInclude Include="DrawKolam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PopUpMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
