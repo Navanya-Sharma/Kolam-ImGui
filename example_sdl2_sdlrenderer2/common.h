@@ -14,3 +14,4 @@
 #include "imgui_impl_sdlrenderer2.h"
 
 #include "core.h"
+#include "MyImGui.h"

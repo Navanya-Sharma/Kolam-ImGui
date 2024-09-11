@@ -1,8 +1,11 @@
 #pragma once
-extern ImGuiIO& io;
+#include "common.h"
+
+extern ImGuiIO* io;
 extern ImFont* gFont;
 extern ImFont* BoldFont;
-extern ImGuiStyle& style;
+extern ImGuiStyle* style;
 
-void initImGui();
+bool initImGui();
+bool setupImGui();
 void InitialPopUp();

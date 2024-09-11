@@ -1,4 +1,4 @@
-#include "core.h"
+
 #include "common.h"
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -61,6 +61,8 @@ bool init() {
 			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 			pass = false;
 		}
+
+		ImGui::CreateContext();
 	}
 
 	return pass;
