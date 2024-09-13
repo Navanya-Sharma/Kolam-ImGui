@@ -18,7 +18,7 @@ KolamButton::KolamButton() {
 	pos.x = 0;
 	pos.y = 0;
 
-	place = DrawKolam::left;
+	place = left;
 	st = Outside;
 	cur = 2;
 	bw = SPACE + THICK;
@@ -29,21 +29,21 @@ KolamButton::KolamButton() {
 
 KolamButton::~KolamButton() {
 	pos = { NULL,NULL };
-	place = DrawKolam::left;
+	place = left;
 	cur = NULL;
 	bw = NULL;
 	bh = NULL;
 }
 
-void KolamButton::setPosition(int x, int y, DrawKolam::buttonType w) {
+void KolamButton::setPosition(int x, int y, buttonType w) {
 	pos.x = x;
 	pos.y = y;
 	place = w;
 
 	switch (place)
 	{
-	case DrawKolam::top:
-	case DrawKolam::bottom:
+	case top:
+	case bottom:
 		bw = 4 * SPACE;
 		bh = bh - SPACE;
 		break;
@@ -77,9 +77,9 @@ void KolamButton::render() {
 	}
 	//Render the image according to the current sprite
 	switch (place) {
-	case DrawKolam::right: case DrawKolam::left:
+	case right: case left:
 		sheetLR.Render(pos.x, pos.y, &ImgLR[cur], bw, bh, (place - 1) * 90.0); break;
-	case DrawKolam::bottom: case DrawKolam::top:
+	case bottom: case top:
 		sheetUD.Render(pos.x, pos.y, &ImgUD[cur], bw, bh, place * 90.0);break;
 	}
 

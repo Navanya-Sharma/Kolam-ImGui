@@ -1,17 +1,18 @@
 #pragma once
 #include "common.h"
 
+enum buttonType {
+	top,
+	right,
+	bottom,
+	left,
+};
 
 
 class DrawKolam : public Scene
 {
 public:	
-	enum buttonType {
-		top,
-		right,
-		bottom,
-		left,
-	};
+	
 	bool Init() override;
 	void Update() override;
 	void Render() override;
@@ -35,8 +36,8 @@ bool MakeDot();
 bool MakeSheetLR();
 bool MakeSheetUD();
 
-int ActiveButtonID(DrawKolam::buttonType &place);
+int ActiveButtonID(buttonType &place);
 
-int CheckInside(DrawKolam::buttonType &place);
+int CheckInside(buttonType &place);
 
 

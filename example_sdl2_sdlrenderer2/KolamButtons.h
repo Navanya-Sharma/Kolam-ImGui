@@ -9,28 +9,26 @@
 	left,
 };*/
 
-extern enum buttonState {
+extern SDL_Color ButtonStateColors[4], ButtonStateBorder[4];
+
+class KolamButton {
+	public:
+		enum buttonState {
 			Outside,
 			Inside,
 			Pressed,
 			JustPressed,
 		};
-
-extern SDL_Color ButtonStateColors[4], ButtonStateBorder[4];
-
-class KolamButton {
-	public:
-		
 		KolamButton();
 		~KolamButton();
-		void setPosition(int x, int y, DrawKolam::buttonType w);
+		void setPosition(int x, int y, buttonType w);
 		void render();
 		void changeState(buttonState newst);
 		void changeSprite();
 	private:
 
 		SDL_Point pos;
-		DrawKolam::buttonType place;
+		buttonType place;
 		buttonState st;
 		int cur;
 		int bw;

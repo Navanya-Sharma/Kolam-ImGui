@@ -36,17 +36,17 @@ void DrawKolam::Render() {
 void DrawKolam::HandleEvent(SDL_Event *e){
 	//static int pev = 0, i = 0; 
 	buttonType place;
-	butts[pev].changeState(Outside);
+	butts[pev].changeState(KolamButton::Outside);
 	if (CheckInside(place)) {
 		i = ActiveButtonID(place);
-		butts[i].changeState(Inside);
+		butts[i].changeState(KolamButton::Inside);
 		if (e->type == SDL_MOUSEBUTTONDOWN) {
 			Mix_PlayChannel(-1, buttSound, 0);
 			butts[i].changeSprite();
-			butts[i].changeState(Pressed);
+			butts[i].changeState(KolamButton::Pressed);
 		}
 		else if (e->type == SDL_MOUSEBUTTONUP) {
-			butts[i].changeState(JustPressed);
+			butts[i].changeState(KolamButton::JustPressed);
 		}
 	}
 }
@@ -82,10 +82,10 @@ void DrawButtons() {
 			dot.Render(x - a / 2, y - a / 2);
 
 			//0->left 1-> bottom 2-> right 3->top
-			butts[i].setPosition(x - 2 * SPACE, y - SPACE, DrawKolam::left);
-			butts[i + 2].setPosition(x + SPACE - THICK, y - SPACE, DrawKolam::right);
-			butts[i + 1].setPosition(x - 2 * SPACE, y + SPACE, DrawKolam::bottom);
-			butts[i + 3].setPosition(x - 2 * SPACE, y - 2 * SPACE, DrawKolam::top);
+			butts[i].setPosition(x - 2 * SPACE, y - SPACE, left);
+			butts[i + 2].setPosition(x + SPACE - THICK, y - SPACE, right);
+			butts[i + 1].setPosition(x - 2 * SPACE, y + SPACE, bottom);
+			butts[i + 3].setPosition(x - 2 * SPACE, y - 2 * SPACE, top);
 		}
 	}
 }
@@ -277,29 +277,29 @@ bool MakeSheetLR() {
 	return pass;
 }
 
-int ActiveButtonID(DrawKolam::buttonType &place) {
+int ActiveButtonID(buttonType &place) {
 	int x, y, i;
 	SDL_GetMouseState(&x, &y);
 	int N = ROWS * ((x - OffsetX) / (4 * SPACE)) + ((y - OffsetY) / (4 * SPACE));
 	switch (place)
 	{
-	case DrawKolam::left:
+	case left:
 		i = 4 * N;
 		break;
-	case DrawKolam::bottom:
+	case bottom:
 		i = 4 * N + 1;
 		break;
-	case DrawKolam::right:
+	case right:
 		i = 4 * N + 2;
 		break;
-	case DrawKolam::top:
+	case top:
 		i = 4 * N + 3;
 		break;
 	}
 	return i;
 }
 
-int CheckInside(DrawKolam::buttonType &place) {
+int CheckInside(buttonType &place) {
 
 	int x, y, xin, yin;
 	int inn = 0;
@@ -315,21 +315,21 @@ int CheckInside(DrawKolam::buttonType &place) {
 	yin = (y - OffsetY - (4 * SPACE) * ((y - OffsetY) / (4 * SPACE))) / SPACE;
 
 	if (yin == 0) {
-		place = DrawKolam::top;
+		place = top;
 		return 1;
 	}
 	else if (yin == 3) {
-		place = DrawKolam::bottom;
+		place = bottom;
 		return 1;
 	}
 
 	xin = (x - OffsetX - (4 * SPACE) * ((x - OffsetX) / (4 * SPACE)));
 	if (xin <= SPACE + THICK) {
-		place = DrawKolam::left;
+		place = left;
 		return 1;
 	}
 	else if (3 * SPACE - THICK <= xin) {
-		place = DrawKolam::right;
+		place = right;
 		return 1;
 	}
 	return inn;
