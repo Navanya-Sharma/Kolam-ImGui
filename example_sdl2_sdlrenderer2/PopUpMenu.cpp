@@ -69,6 +69,8 @@ void PopUpMenu::Update()
 
     if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { rows = rows + 1 < 10 ? rows + 1 : 9; };
 
+    ROWS = rows;
+
     //COLUMNS
     ImGui::PushID(1);
     ImGui::Text("No. of Columns:");
@@ -86,6 +88,8 @@ void PopUpMenu::Update()
     if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { cols = cols + 1 < 10 ? cols + 1 : 9; }
     ImGui::PopItemFlag();
     ImGui::PopID();
+
+    COLS = cols;
 
     //lETS DRAW BUTTON
     style->FramePadding = ImVec2(30, 10);
@@ -111,4 +115,8 @@ void PopUpMenu::Render() {
     SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
     SDL_RenderClear(gRenderer);
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), gRenderer);
+}
+
+void PopUpMenu::HandleEvent(SDL_Event* e){
+    ImGui_ImplSDL2_ProcessEvent(e);
 }

@@ -3,14 +3,20 @@
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 SceneManager gSceneManager;
-//PopUpMenu* gPopUpMenu;
-//DrawKolam* gDrawKolam;
+
+SDL_Rect ImgUD[2], ImgLR[2];
+Mix_Music* music=NULL;
+Mix_Chunk* buttSound=NULL;
 
 ImGuiIO* io = NULL;
 ImFont* gFont = NULL;
-
 ImFont* BoldFont = NULL;
 ImGuiStyle* style = NULL;
+
+const int SCREEN_WIDTH = 1000;
+const int SCREEN_HEIGHT = 600;
+int SPACE, ROWS, COLS, OffsetX, OffsetY, TOTAL_BUTTONS, MaxTHICK;
+float THICK;
 
 bool init() {
 	bool pass = true;
@@ -101,7 +107,6 @@ bool initImGui() {
 	return pass;
 }
 
-
 void close() {
 	ImGui_ImplSDLRenderer2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
@@ -112,21 +117,7 @@ void close() {
 	SDL_Quit();
 }
 
-bool SceneManager::ChangeScene(std::unique_ptr<Scene> newScene) {
-	if (currentScene != nullptr) 
-		currentScene->~Scene();
-	currentScene = std::move(newScene);
-	return currentScene->Init();
-}
-void SceneManager::Update() {
-	if (currentScene != nullptr)
-		currentScene->Update();
-}
 
-void SceneManager::Render() {
-	if (currentScene != nullptr)
-		currentScene->Render();
-}
 
 
 

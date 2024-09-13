@@ -15,12 +15,14 @@ int main(int, char**){
             SDL_Event event;
             while (SDL_PollEvent(&event))
             {
-                ImGui_ImplSDL2_ProcessEvent(&event);
+                
                 if (event.type == SDL_QUIT)
                     done = true;
                 if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE
                     && event.window.windowID == SDL_GetWindowID(gWindow))
                     done = true;
+                
+                gSceneManager.HandleEvent(&event);
             }
             if (SDL_GetWindowFlags(gWindow) & SDL_WINDOW_MINIMIZED)
             {

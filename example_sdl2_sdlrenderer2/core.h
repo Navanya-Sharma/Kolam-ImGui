@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL.h>
+#include "common.h"
 
 //CLASSES
 
@@ -8,6 +8,7 @@ class Scene {
 		virtual bool Init()=0;
 		virtual void Update()=0;
 		virtual void Render() = 0;
+		virtual void HandleEvent(SDL_Event *e) = 0;
 
 };
 
@@ -16,9 +17,24 @@ public:
 	SceneManager() {
 		currentScene = nullptr;
 	}
-	bool ChangeScene(std::unique_ptr<Scene> newScene);
-	void Update();
-	void Render();
+	bool ChangeScene(std::unique_ptr<Scene> newScene) {
+		if (currentScene != nullptr)
+			currentScene->~Scene();
+		currentScene = std::move(newScene);
+		return currentScene->Init();
+	}
+	void Update() {
+		if (currentScene != nullptr)
+			currentScene->Update();
+	}
+	void Render() {
+		if (currentScene != nullptr)
+			currentScene->Render();
+	}
+	void HandleEvent(SDL_Event *e) {
+		if (currentScene != nullptr)
+			currentScene->HandleEvent(e);
+	}
 
 private:
 	std::unique_ptr<Scene> currentScene =nullptr;
@@ -29,8 +45,9 @@ private:
 //SDL
 extern SDL_Window* gWindow;
 extern SDL_Renderer* gRenderer;
-extern SceneManager gSceneManager;
-
+extern SDL_Rect ImgUD[2], ImgLR[2];
+extern Mix_Music* music;
+extern Mix_Chunk* buttSound;
 
 //ImGUI
 extern ImGuiIO* io;
@@ -38,15 +55,17 @@ extern ImFont* gFont;
 extern ImFont* BoldFont;
 extern ImGuiStyle* style;
 
+//CLASSES INITIALIZED
+extern SceneManager gSceneManager;
+
 //Rest
-const int SCREEN_WIDTH = 1000;
-const int SCREEN_HEIGHT = 600;
+extern const int SCREEN_WIDTH, SCREEN_HEIGHT;
+extern int SPACE, ROWS, COLS, OffsetX, OffsetY, TOTAL_BUTTONS, MaxTHICK;
+extern float THICK;
 
 
 //FUNCTION DECLARATION
 bool init();
 bool initImGui();
-bool load();
-
 void close();
 

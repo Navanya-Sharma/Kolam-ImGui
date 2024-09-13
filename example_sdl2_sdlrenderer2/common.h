@@ -18,3 +18,5 @@
 #include "core.h"
 #include "PopUpMenu.h"
 #include "DrawKolam.h"
+#include "KolamButtons.h"
+#include "Texture.h"

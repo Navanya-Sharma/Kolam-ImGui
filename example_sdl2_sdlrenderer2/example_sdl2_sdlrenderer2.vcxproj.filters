@@ -46,6 +46,12 @@
     <ClCompile Include="DrawKolam.cpp">
       <Filter>sources</Filter>
     </ClCompile>
+    <ClCompile Include="KolamButtons.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.txt" />
@@ -63,5 +69,7 @@
     <ClInclude Include="PopUpMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="KolamButtons.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
 </Project>
