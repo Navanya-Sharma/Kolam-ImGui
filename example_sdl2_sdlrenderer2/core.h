@@ -20,8 +20,6 @@ public:
 		currentScene = nullptr;
 	}
 	bool ChangeScene(std::unique_ptr<Scene> newScene) {
-		if (currentScene != nullptr)
-			currentScene->~Scene();
 		currentScene = std::move(newScene);
 		return currentScene->Init();
 	}
@@ -69,5 +67,4 @@ extern float THICK;
 //FUNCTION DECLARATION
 bool init();
 bool initImGui();
-void close();
 

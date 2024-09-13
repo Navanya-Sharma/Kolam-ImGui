@@ -53,11 +53,10 @@ void DrawKolam::HandleEvent(SDL_Event *e){
 
 
 void GlobalDec() {
-	SPACE = std::min(SCREEN_WIDTH / (4 * ROWS), SCREEN_HEIGHT / (4 * COLS));
-	OffsetX = (SCREEN_WIDTH - 4 * SPACE * ROWS) / 2;
+	SPACE = std::min(SCREEN_WIDTH / (4 * COLS), SCREEN_HEIGHT / (4 * ROWS));
+	OffsetX = (SCREEN_WIDTH - 4 * SPACE * COLS) / 2;
 	OffsetY = (SCREEN_HEIGHT - 4 * SPACE * ROWS) / 2;
 	TOTAL_BUTTONS = 4 * ROWS * COLS;
-	//butts = new KolamButton[TOTAL_BUTTONS];
 	MaxTHICK = 1.172 * SPACE;// 2(2-root(2))*thick -> where the outer circle will touch the boundary
 	THICK = 0.3 * SPACE;
 }
@@ -75,10 +74,9 @@ void DrawButtons() {
 	butts = new KolamButton[TOTAL_BUTTONS];
 
 	int a = dot.GetWidth();
-
-	for (int ri = 0, x = 2 * SPACE + OffsetX, i = 0; ri < COLS; ri++, x += 4 * SPACE) {
-		for (int ci = 0, y = 2 * SPACE + OffsetY;ci < ROWS; ci++, i += 4, y += 4 * SPACE) {
-
+	for (int ri = 0, x = 2 * SPACE + OffsetX, i = 0; ri < COLS; ri++,x += 4 * SPACE) {
+		for (int ci = 0, y = 2 * SPACE + OffsetY;ci < ROWS; ci++, i += 4,  y += 4 * SPACE) {
+		
 			dot.Render(x - a / 2, y - a / 2);
 
 			//0->left 1-> bottom 2-> right 3->top
@@ -86,6 +84,7 @@ void DrawButtons() {
 			butts[i + 2].setPosition(x + SPACE - THICK, y - SPACE, right);
 			butts[i + 1].setPosition(x - 2 * SPACE, y + SPACE, bottom);
 			butts[i + 3].setPosition(x - 2 * SPACE, y - 2 * SPACE, top);
+
 		}
 	}
 }
@@ -309,7 +308,7 @@ int CheckInside(buttonType &place) {
 	if (x<OffsetX || x>(OffsetX + COLS * 4 * SPACE)) {
 		return 0;
 	}
-	if (y<OffsetY || y>(OffsetX + ROWS * 4 * SPACE)) {
+	if (y<OffsetY || y>(OffsetY + ROWS * 4 * SPACE)) {
 		return 0;
 	}
 	yin = (y - OffsetY - (4 * SPACE) * ((y - OffsetY) / (4 * SPACE))) / SPACE;

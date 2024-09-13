@@ -3,6 +3,8 @@
 bool PopUpMenu::Init() {
     bool pass = true;
 
+    Mix_PlayMusic(music, -1);
+
     ImGui::StyleColorsDark();
     style = &ImGui::GetStyle();
     if (!style) { printf("Style not loaded");pass = false; }
@@ -60,14 +62,17 @@ void PopUpMenu::Update()
     ImGui::PushItemFlag(ImGuiItemFlags_ButtonRepeat, true);
     ImGui::PushItemWidth(100);
 
-    if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { rows = rows - 1 > 0 ? rows - 1 : 1; }
+    if (ImGui::ArrowButton("##left", ImGuiDir_Left)) 
+    { rows = rows - 1 > 0 ? rows - 1 : 1; Mix_PlayChannel(-1, buttSound, 0);
+    }
 
     float spacing = 40;
     ImGui::SameLine(0.0f, spacing);
     ImGui::Text("%d", rows);
     ImGui::SameLine(0.0f, spacing);
 
-    if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { rows = rows + 1 < 10 ? rows + 1 : 9; };
+    if (ImGui::ArrowButton("##right", ImGuiDir_Right)) 
+    { rows = rows + 1 < 10 ? rows + 1 : 9; Mix_PlayChannel(-1, buttSound, 0);}
 
     ROWS = rows;
 
@@ -79,13 +84,15 @@ void PopUpMenu::Update()
     y = ImGui::GetCursorPosY();
     ImGui::SetCursorPos(ImVec2(textX, y));
 
-    if (ImGui::ArrowButton("##left", ImGuiDir_Left)) { cols = cols - 1 > 0 ? cols - 1 : 1; }
+    if (ImGui::ArrowButton("##left", ImGuiDir_Left)) 
+    { cols = cols - 1 > 0 ? cols - 1 : 1; Mix_PlayChannel(-1, buttSound, 0);}
 
     ImGui::SameLine(0.0f, spacing);
     ImGui::Text("%d", cols);
     ImGui::SameLine(0.0f, spacing);
 
-    if (ImGui::ArrowButton("##right", ImGuiDir_Right)) { cols = cols + 1 < 10 ? cols + 1 : 9; }
+    if (ImGui::ArrowButton("##right", ImGuiDir_Right)) 
+    { cols = cols + 1 < 10 ? cols + 1 : 9; Mix_PlayChannel(-1, buttSound, 0);}
     ImGui::PopItemFlag();
     ImGui::PopID();
 
@@ -98,6 +105,7 @@ void PopUpMenu::Update()
     ImGui::Indent(164);
     ImGui::Dummy(ImVec2(0, 23));
     if (ImGui::Button("Let's Draw!")) {
+        Mix_PlayChannel(-1, buttSound, 0);
         if(!gSceneManager.ChangeScene(std::make_unique<DrawKolam>()))
             printf("Can not change the scene to DrawKolam");
     }

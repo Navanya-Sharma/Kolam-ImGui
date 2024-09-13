@@ -55,6 +55,35 @@ int main(int, char**){
             SDL_RenderPresent(gRenderer);
         }
     }
-    close();
+    //CLOSE FUNCTION
+    {
+        ImGui_ImplSDLRenderer2_Shutdown();
+        ImGui_ImplSDL2_Shutdown();
+        ImGui::DestroyContext();
+
+        dot.~Texture();
+        sheetUD.~Texture();
+        sheetLR.~Texture();
+
+        SDL_DestroyRenderer(gRenderer);
+        gRenderer = NULL;
+
+        Mix_FreeMusic(music);
+        music = NULL;
+        Mix_FreeChunk(buttSound);
+        buttSound = NULL;
+
+        SDL_DestroyRenderer(gRenderer);
+        SDL_DestroyWindow(gWindow);
+        gWindow = NULL;
+        SDL_Quit();
+        IMG_Quit();
+
+        for (int i = 0; i < TOTAL_BUTTONS; i++) {
+            butts[i].~KolamButton();
+        }
+        delete[] butts;
+        butts = NULL;
+    }
     return 0;
 }

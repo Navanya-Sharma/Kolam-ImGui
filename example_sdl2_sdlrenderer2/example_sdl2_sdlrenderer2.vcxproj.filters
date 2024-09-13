@@ -60,9 +60,6 @@
     <ClInclude Include="core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DrawKolam.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -82,6 +82,21 @@ bool init() {
 			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 			pass = false;
 		}
+		else
+		{
+			music = Mix_LoadMUS("Music/santoor.mp3");
+			if (music == NULL)
+			{
+				printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+				pass = false;
+			}
+			buttSound = Mix_LoadWAV("Music/low.wav");
+			if (buttSound == NULL)
+			{
+				printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+				pass = false;
+			}
+		}
 
 		ImGui::CreateContext();
 		//gSceneManager->SceneManager();
@@ -113,15 +128,6 @@ bool initImGui() {
 	return pass;
 }
 
-void close() {
-	ImGui_ImplSDLRenderer2_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
-
-	SDL_DestroyRenderer(gRenderer);
-	SDL_DestroyWindow(gWindow);
-	SDL_Quit();
-}
 
 
 
