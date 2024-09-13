@@ -1,5 +1,5 @@
 #pragma once
-#include "common.h"
+#include<SDL.h>
 
 class Texture{
 	public:

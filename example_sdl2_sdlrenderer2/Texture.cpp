@@ -1,4 +1,9 @@
+#include <string>
+#include <SDL.h>
+#include <SDL_image.h>
+
 #include "Texture.h"
+#include "core.h"
 
 Texture::Texture() {
 	text = NULL;

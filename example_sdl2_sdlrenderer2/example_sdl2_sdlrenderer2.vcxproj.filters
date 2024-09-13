@@ -69,7 +69,14 @@
     <ClInclude Include="PopUpMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="KolamButtons.h" />
-    <ClInclude Include="Texture.h" />
+    <ClInclude Include="KolamButtons.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

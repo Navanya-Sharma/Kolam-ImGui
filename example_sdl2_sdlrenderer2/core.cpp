@@ -1,5 +1,11 @@
 
-#include "common.h"
+#include <SDL.h>
+#include <SDL_image.h>
+#include<SDL_mixer.h>
+
+#include "core.h"
+#include "Scene.h"
+
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 SceneManager gSceneManager;
@@ -65,11 +71,11 @@ bool init() {
 		}
 
 
-		if (TTF_Init() == -1)
+		/*if (TTF_Init() == -1)
 		{
 			printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 			pass = false;
-		}
+		}*/
 
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		{

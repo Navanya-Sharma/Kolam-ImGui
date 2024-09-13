@@ -1,13 +1,15 @@
 #pragma once
-#include "common.h"
+#include <SDL.h>
+#include "core.h"
+#include "Texture.h"
 
 
-/*extern enum buttonType {
+enum buttonType {
 	top,
 	right,
 	bottom,
 	left,
-};*/
+};
 
 extern SDL_Color ButtonStateColors[4], ButtonStateBorder[4];
 

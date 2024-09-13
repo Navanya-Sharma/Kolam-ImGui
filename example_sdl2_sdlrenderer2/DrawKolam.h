@@ -1,12 +1,9 @@
 #pragma once
-#include "common.h"
+#include<SDL.h>
 
-enum buttonType {
-	top,
-	right,
-	bottom,
-	left,
-};
+#include "KolamButtons.h"
+#include "Scene.h"
+#include "core.h"
 
 
 class DrawKolam : public Scene

@@ -1,5 +1,5 @@
-#include "common.h"
-
+#include "DrawKolam.h"
+#include "Texture.h"
 
 
 bool DrawKolam::Init() {	
