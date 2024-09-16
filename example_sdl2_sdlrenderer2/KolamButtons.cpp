@@ -48,7 +48,7 @@ void KolamButton::setPosition(int x, int y, buttonType w) {
 		bh = bh - SPACE;
 		break;
 	}
-	render();
+	//render();
 
 	SDL_Rect rec = { pos.x, pos.y, bw, bh };
 	SDL_SetRenderDrawColor(gRenderer, 0xF2, 0X7C, 0X50, 0xFF);

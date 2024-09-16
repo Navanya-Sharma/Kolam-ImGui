@@ -7,7 +7,7 @@
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
-
+#include "IconsFontAwesome.h"
 #include "Scene.h""
 
 //CLASSES
@@ -21,6 +21,9 @@ public:
 	}
 	bool ChangeScene(std::unique_ptr<Scene> newScene) {
 		currentScene = std::move(newScene);
+		return currentScene->Init();
+	}
+	bool Init() {
 		return currentScene->Init();
 	}
 	void Update() {
@@ -59,9 +62,10 @@ extern ImGuiStyle* style;
 extern SceneManager gSceneManager;
 
 //Rest
-extern const int SCREEN_WIDTH, SCREEN_HEIGHT;
+extern int SCREEN_WIDTH, SCREEN_HEIGHT;
 extern int SPACE, ROWS, COLS, OffsetX, OffsetY, TOTAL_BUTTONS, MaxTHICK;
 extern float THICK;
+extern char * NAME;
 
 
 //FUNCTION DECLARATION

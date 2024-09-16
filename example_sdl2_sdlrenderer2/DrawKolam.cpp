@@ -1,6 +1,7 @@
 #include "DrawKolam.h"
 #include "Texture.h"
 
+#include "IconsFontAwesome.h"
 
 bool DrawKolam::Init() {	
 	GlobalDec();
@@ -11,6 +12,23 @@ bool DrawKolam::Init() {
 		SDL_RenderClear(gRenderer);
 
 		DrawButtons();
+
+		style = &ImGui::GetStyle();
+
+		style->Colors[ImGuiCol_Button] = ImVec4(((float)0xCC / (float)255), ((float)0x6B / (float)255), ((float)0x47 / (float)255), 1.f);
+		style->Colors[ImGuiCol_ButtonHovered] = ImVec4(((float)0xCC / (float)255), ((float)0x4A / (float)255), ((float)0x19 / (float)255), 1.f);
+		style->Colors[ImGuiCol_ButtonActive] = ImVec4(((float)0x99 / (float)255), ((float)0x41 / (float)255), ((float)0x1F / (float)255), 1.f);
+		style->Colors[ImGuiCol_FrameBg] = ImVec4(((float)0x99 / (float)255), ((float)0x67 / (float)255), ((float(0x54) / (float)255)), 1.f);
+
+		style->WindowPadding = ImVec2(10, 10);
+		style->FramePadding = ImVec2(10, 10);
+
+		style->ItemSpacing = ImVec2(20, 20);
+		style->ItemInnerSpacing = ImVec2(30, 30);
+		
+
+		style->WindowRounding = 0;
+		style->FrameRounding = 20;
 		return true;
 	}
 	else {
@@ -22,19 +40,79 @@ bool DrawKolam::Init() {
 }
 
 void DrawKolam::Update() {
+
+	ImGui_ImplSDLRenderer2_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
+	ImVec2 ButtonSize = ImVec2(50, 50);
+
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x,70));
+	ImGui::Begin("Titlebar", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+
+	if(ImGui::Button(ICON_FA_BARS,ButtonSize)){}
+	ImGui::SameLine();
+	ImGui::PushFont(BoldFont);
+	ImGui::Text(NAME);
+	ImGui::PopFont();
+	ImGui::End();
 	
+
+	//ImGui::ShowDemoWindow();
+	ImGui::SetNextWindowPos(ImVec2(0, 70));
+	ImGui::SetNextWindowSize(ImVec2(70, ImGui::GetIO().DisplaySize.y-70));
+	ImGui::Begin("Sidebar", nullptr, ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+
+	
+
+	if (ImGui::Button(ICON_FA_TABLE_CELLS,ButtonSize))
+	{
+		// Handle menu item 1 click
+	}
+	if (ImGui::Button(ICON_FA_BRUSH, ButtonSize))
+	{
+		// Handle menu item 1 click
+	}
+	if (ImGui::Button(ICON_FA_DROPLET, ButtonSize))
+	{
+		// Handle menu item 1 click
+	}
+	if (ImGui::Button(ICON_FA_FOLDER_OPEN, ButtonSize))
+	{
+		// Handle menu item 1 click
+	}
+	if (ImGui::Button(ICON_FA_FILE_ARROW_DOWN, ButtonSize))
+	{
+		// Handle menu item 1 click
+	}
+	if (ImGui::Button(ICON_FA_TRASH_CAN, ButtonSize))
+	{
+		// Handle menu item 1 click
+	}
+
+	ImGui::End();
+
 }
 
 void DrawKolam::Render() {
-	//SDL_SetRenderDrawColor(gRenderer, 0xFF,0xFF, 0xFF, 0xFF);
-	//SDL_RenderClear(gRenderer);
+	
 	butts[pev].render();
 	butts[i].render();
 	pev = i;
+
+	//SDL_RenderPresent(gRenderer);
+	ImGui::Render();
+
+	static int once= 0;
+	if (once++<2) RenderButtons();
+	
+	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), gRenderer);
+
 }
 
 void DrawKolam::HandleEvent(SDL_Event *e){
-	//static int pev = 0, i = 0; 
+	ImGui_ImplSDL2_ProcessEvent(e);
 	buttonType place;
 	butts[pev].changeState(KolamButton::Outside);
 	if (CheckInside(place)) {
@@ -45,20 +123,40 @@ void DrawKolam::HandleEvent(SDL_Event *e){
 			butts[i].changeSprite();
 			butts[i].changeState(KolamButton::Pressed);
 		}
-		else if (e->type == SDL_MOUSEBUTTONUP) {
-			butts[i].changeState(KolamButton::JustPressed);
-		}
 	}
 }
 
 
 void GlobalDec() {
-	SPACE = std::min(SCREEN_WIDTH / (4 * COLS), SCREEN_HEIGHT / (4 * ROWS));
-	OffsetX = (SCREEN_WIDTH - 4 * SPACE * COLS) / 2;
-	OffsetY = (SCREEN_HEIGHT - 4 * SPACE * ROWS) / 2;
+	int wd = SCREEN_WIDTH - 70;
+	int ht = SCREEN_HEIGHT - 70;
+	SPACE = std::min(wd/ (4 * COLS), ht/ (4 * ROWS));
+	OffsetX = (wd - 4 * SPACE * COLS) / 2+70;
+	OffsetY = (ht - 4 * SPACE * ROWS) / 2+70;
 	TOTAL_BUTTONS = 4 * ROWS * COLS;
 	MaxTHICK = 1.172 * SPACE;// 2(2-root(2))*thick -> where the outer circle will touch the boundary
 	THICK = 0.3 * SPACE;
+}
+
+
+void RenderButtons() {
+	SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
+	SDL_RenderClear(gRenderer);
+
+	int a = dot.GetWidth();
+	for (int ri = 0, x = 2 * SPACE + OffsetX, i = 0; ri < COLS; ri++, x += 4 * SPACE) {
+		for (int ci = 0, y = 2 * SPACE + OffsetY;ci < ROWS; ci++, i += 4, y += 4 * SPACE) {
+
+			dot.Render(x - a / 2, y - a / 2);
+
+			//0->left 1-> bottom 2-> right 3->top
+			butts[i].render();
+			butts[i + 2].render();
+			butts[i + 1].render();
+			butts[i + 3].render();
+
+		}
+	}
 }
 
 void DrawButtons() {

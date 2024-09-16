@@ -5,7 +5,6 @@
 #include "Scene.h"
 #include "core.h"
 
-
 class DrawKolam : public Scene
 {
 public:	
@@ -24,6 +23,7 @@ private:
 };
 
 void DrawButtons();
+void RenderButtons();
 void GlobalDec();
 
 int SDL_RenderFillCircle(SDL_Renderer* renderer, int x, int y, int radius);

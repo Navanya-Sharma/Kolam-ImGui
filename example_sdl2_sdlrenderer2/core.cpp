@@ -19,10 +19,12 @@ ImFont* gFont = NULL;
 ImFont* BoldFont = NULL;
 ImGuiStyle* style = NULL;
 
-const int SCREEN_WIDTH = 1000;
-const int SCREEN_HEIGHT = 600;
+int SCREEN_WIDTH = 1000;
+int SCREEN_HEIGHT = 600;
 int SPACE, ROWS, COLS, OffsetX, OffsetY, TOTAL_BUTTONS, MaxTHICK;
 float THICK;
+char * NAME ;
+
 
 bool init() {
 	bool pass = true;
@@ -116,10 +118,21 @@ bool initImGui() {
 		io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 		io->ConfigDebugIsDebuggerPresent = true;
+		
 		gFont = io->Fonts->AddFontFromFileTTF("Font/roboto/Roboto-Regular.ttf", 30);
+		
+		ImFontConfig config;
+		config.MergeMode = true;
+		config.GlyphMinAdvanceX = 30.0f;
+		static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+		io->Fonts->AddFontFromFileTTF("Font/fontawesome/webfonts/fa-solid-900.ttf", 30.0f, & config,icon_ranges);
+		
 		BoldFont = io->Fonts->AddFontFromFileTTF("Font/roboto/Roboto-Bold.ttf", 45);
+		io->Fonts->AddFontDefault();
+
 		if (!gFont) { printf("gFont not loaded. Regular Font");pass = false; }
 		if (!BoldFont) { printf("BoldFont not loaded");pass = false; }
+		
 	}
 
 	ImGui_ImplSDL2_InitForSDLRenderer(gWindow, gRenderer);

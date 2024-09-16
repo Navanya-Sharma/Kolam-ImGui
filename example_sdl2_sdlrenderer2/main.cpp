@@ -36,10 +36,18 @@ int main(int, char**){
                 
                 if (event.type == SDL_QUIT)
                     done = true;
-                if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE
-                    && event.window.windowID == SDL_GetWindowID(gWindow))
-                    done = true;
-                
+                if (event.type == SDL_WINDOWEVENT) {
+
+                    if (event.window.event == SDL_WINDOWEVENT_CLOSE
+                        && event.window.windowID == SDL_GetWindowID(gWindow))
+                        done = true;
+                    if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+                        SCREEN_WIDTH = event.window.data1;
+                        SCREEN_HEIGHT = event.window.data2;
+                        gSceneManager.Init();
+                    }
+
+                }
                 gSceneManager.HandleEvent(&event);
             }
             if (SDL_GetWindowFlags(gWindow) & SDL_WINDOW_MINIMIZED)

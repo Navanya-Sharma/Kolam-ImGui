@@ -189,6 +189,7 @@
   <ItemGroup>
     <ClInclude Include="core.h" />
     <ClInclude Include="DrawKolam.h" />
+    <ClInclude Include="IconsFontAwesome.h" />
     <ClInclude Include="KolamButtons.h" />
     <ClInclude Include="PopUpMenu.h" />
     <ClInclude Include="Scene.h" />

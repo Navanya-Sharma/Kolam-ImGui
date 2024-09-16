@@ -3,7 +3,7 @@
 bool PopUpMenu::Init() {
     bool pass = true;
 
-    Mix_PlayMusic(music, -1);
+    //Mix_PlayMusic(music, -1);
 
     ImGui::StyleColorsDark();
     style = &ImGui::GetStyle();
@@ -52,6 +52,7 @@ void PopUpMenu::Update()
     int textX = ImGui::GetCursorPosX() + 60;
     ImGui::PushItemWidth(280);
     ImGui::InputText(" ", buf1, 32);
+    NAME = buf1;
 
     //ROWS
     ImGui::Text("No. of Rows:");
