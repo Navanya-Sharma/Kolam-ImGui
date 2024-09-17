@@ -2,10 +2,10 @@
 #include "Texture.h"
 
 #include "IconsFontAwesome.h"
+int pev = 0;
 
 bool DrawKolam::Init() {	
 	GlobalDec();
-	pev = 0;i = 0;
 	if (MakeDot() && MakeSheetLR() && MakeSheetUD())
 	{
 		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
@@ -40,10 +40,14 @@ bool DrawKolam::Init() {
 }
 
 void DrawKolam::Update() {
+	SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
+	SDL_RenderClear(gRenderer);
 
 	ImGui_ImplSDLRenderer2_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
+
+	ImGui::ShowDemoWindow();
 
 	ImVec2 ButtonSize = ImVec2(50, 50);
 
@@ -51,7 +55,7 @@ void DrawKolam::Update() {
 	ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x,70));
 	ImGui::Begin("Titlebar", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
-	if(ImGui::Button(ICON_FA_BARS,ButtonSize)){}
+	if(ImGui::Button(ICON_FA_BARS,ButtonSize)){ Mix_PlayChannel(-1, buttSound, 0); }
 	ImGui::SameLine();
 	ImGui::PushFont(BoldFont);
 	ImGui::Text(NAME);
@@ -60,6 +64,8 @@ void DrawKolam::Update() {
 	
 
 	//ImGui::ShowDemoWindow();
+	gFont->Scale = 0.8;
+	ImGui::PushFont(gFont);
 	ImGui::SetNextWindowPos(ImVec2(0, 70));
 	ImGui::SetNextWindowSize(ImVec2(70, ImGui::GetIO().DisplaySize.y-70));
 	ImGui::Begin("Sidebar", nullptr, ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
@@ -68,44 +74,168 @@ void DrawKolam::Update() {
 
 	if (ImGui::Button(ICON_FA_TABLE_CELLS,ButtonSize))
 	{
-		// Handle menu item 1 click
+		Mix_PlayChannel(-1, buttSound, 0);
+		ImGui::OpenPopup("Resize");
 	}
-	if (ImGui::Button(ICON_FA_BRUSH, ButtonSize))
-	{
-		// Handle menu item 1 click
-	}
-	if (ImGui::Button(ICON_FA_DROPLET, ButtonSize))
-	{
-		// Handle menu item 1 click
-	}
-	if (ImGui::Button(ICON_FA_FOLDER_OPEN, ButtonSize))
-	{
-		// Handle menu item 1 click
-	}
-	if (ImGui::Button(ICON_FA_FILE_ARROW_DOWN, ButtonSize))
-	{
-		// Handle menu item 1 click
-	}
-	if (ImGui::Button(ICON_FA_TRASH_CAN, ButtonSize))
-	{
-		// Handle menu item 1 click
+	ImGui::SetItemTooltip("Resize");
+
+	int y = ImGui::GetMousePos().y;
+	ImGui::SetNextWindowPos(ImVec2(70, y), ImGuiCond_Appearing, ImVec2(0.0f, 0.0f));
+
+	if (ImGui::BeginPopup("Resize")) {
+		//ROWS
+		static int R=ROWS,C=COLS;
+
+		ImGui::Text("No. of Rows:");
+		ImGui::SameLine();
+
+		int y = ImGui::GetCursorPosY();
+		ImGui::SetCursorPos(ImVec2(177, y));
+		ImGui::PushItemFlag(ImGuiItemFlags_ButtonRepeat, true);
+		ImGui::PushItemWidth(100);
+
+		if (ImGui::ArrowButton("##left", ImGuiDir_Left))
+		{R = R - 1 > 0 ? R - 1 : 1; Mix_PlayChannel(-1, buttSound, 0);}
+
+		float spacing = 15;
+		ImGui::SameLine(0.0f, spacing);
+		ImGui::Text("%d", R);
+		ImGui::SameLine(0.0f, spacing);
+
+		if (ImGui::ArrowButton("##right", ImGuiDir_Right))
+		{R = R + 1 < 10 ? R + 1 : 9; Mix_PlayChannel(-1, buttSound, 0);}
+
+		//ROWS = rows;
+
+		//COLUMNS
+		ImGui::PushID(1);
+		ImGui::Text("No. of Columns:");
+		ImGui::SameLine();
+		//printf("%f\n", ImGui::GetCursorPosX());
+
+		if (ImGui::ArrowButton("##left", ImGuiDir_Left))
+		{C = C - 1 > 0 ? C - 1 : 1; Mix_PlayChannel(-1, buttSound, 0);}
+
+		ImGui::SameLine(0.0f, spacing);
+		ImGui::Text("%d", C);
+		ImGui::SameLine(0.0f, spacing);
+
+		if (ImGui::ArrowButton("##right", ImGuiDir_Right))
+		{
+			C = C + 1 < 10 ? C +1 : 9; Mix_PlayChannel(-1, buttSound, 0);
+		}
+		ImGui::PopItemFlag();
+		ImGui::PopID();
+
+		BoldFont->Scale = 0.6;
+		ImGui::PushFont(BoldFont);
+		y = ImGui::GetCursorPosY();
+		ImGui::SetCursorPos(ImVec2(100, y));
+		if (ImGui::Button(" Okay! ",ImVec2(100,35))) {
+			Mix_PlayChannel(-1, buttSound, 0);
+			if (R != ROWS || C != COLS) {
+				Init();
+			}
+		}
+		ImGui::PopFont();
+		BoldFont->Scale = 1;
+		ImGui::EndPopup();
 	}
 
+
+
+
+	if (ImGui::Button(ICON_FA_BRUSH, ButtonSize))
+	{
+		Mix_PlayChannel(-1, buttSound, 0);
+		ImGui::OpenPopup("Bursh Size Popup");
+	}
+	ImGui::SetItemTooltip("Brush Size");
+
+	y = ImGui::GetMousePos().y;
+	ImGui::SetNextWindowPos(ImVec2(70, y), ImGuiCond_Appearing, ImVec2(0.0f, 0.0f));
+	if (ImGui::BeginPopup("Bursh Size Popup"))
+	{
+		ImGui::SliderFloat("Brush Size", &THICK, 0.1f,MaxTHICK);
+		static float col[4];
+		ImGui::ColorPicker4("color4",col);
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::Button(ICON_FA_DROPLET, ButtonSize))
+	{
+		Mix_PlayChannel(-1, buttSound, 0);
+		ImGui::OpenPopup("BackPopup");
+		
+	}
+	ImGui::SetItemTooltip("Background Color");
+
+	y = ImGui::GetMousePos().y;
+	ImGui::SetNextWindowPos(ImVec2(70, y), ImGuiCond_Appearing, ImVec2(0.0f, 0.0f));
+
+	if (ImGui::BeginPopup("BackPopup"))
+	{
+		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+		ImGui::SliderFloat("float", &THICK, 0.0f, MaxTHICK);            // Edit 1 float using a slider from 0.0f to 1.0f
+		ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+
+
+		ImGui::EndPopup();
+	}
+	
+
+	
+	if (ImGui::Button(ICON_FA_FOLDER_OPEN, ButtonSize))
+	{
+		Mix_PlayChannel(-1, buttSound, 0);
+	}
+	ImGui::SetItemTooltip("Open");
+	if (ImGui::Button(ICON_FA_FILE_ARROW_DOWN, ButtonSize))
+	{
+		Mix_PlayChannel(-1, buttSound, 0);
+	}
+	ImGui::SetItemTooltip("Save");
+
+	if (ImGui::Button(ICON_FA_TRASH_CAN, ButtonSize))
+	{
+		ImGui::OpenPopup("Delete it?!");
+		Mix_PlayChannel(-1, buttSound, 0);
+	}
+	ImGui::SetItemTooltip("Delete");
+	
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+	if (ImGui::BeginPopupModal("Delete it?!", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("The beautiful drawing will be deleted!\n Do you want to proceed for sure?");
+		ImGui::Separator();
+
+		if (ImGui::Button("Yes! Delete it", ImVec2(200, 0))) {
+			ImGui::CloseCurrentPopup(); 
+			Mix_PlayChannel(-1, buttSound, 0);
+			ClearAll();}
+
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+
+		if (ImGui::Button("No Way!", ImVec2(200, 0))) { ImGui::CloseCurrentPopup();Mix_PlayChannel(-1, buttSound, 0);}
+		ImGui::EndPopup();
+	}
+	
+	ImGui::PopFont();
+	//gFont->Scale *= 1.66;
 	ImGui::End();
 
 }
 
 void DrawKolam::Render() {
 	
-	butts[pev].render();
-	butts[i].render();
-	pev = i;
-
-	//SDL_RenderPresent(gRenderer);
+	
 	ImGui::Render();
 
-	static int once= 0;
-	if (once++<2) RenderButtons();
+	
+	RenderButtons();
 	
 	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), gRenderer);
 
@@ -113,16 +243,24 @@ void DrawKolam::Render() {
 
 void DrawKolam::HandleEvent(SDL_Event *e){
 	ImGui_ImplSDL2_ProcessEvent(e);
+
+	//To prevent things from clicking in background when Pop Up is active
+	if (io->WantCaptureMouse || io->WantCaptureKeyboard) {
+		return;
+	}
+
 	buttonType place;
-	butts[pev].changeState(KolamButton::Outside);
+	int i;
+	butts[pev].ChangeState(KolamButton::Outside);
 	if (CheckInside(place)) {
 		i = ActiveButtonID(place);
-		butts[i].changeState(KolamButton::Inside);
+		butts[i].ChangeState(KolamButton::Inside);
 		if (e->type == SDL_MOUSEBUTTONDOWN) {
 			Mix_PlayChannel(-1, buttSound, 0);
-			butts[i].changeSprite();
-			butts[i].changeState(KolamButton::Pressed);
+			butts[i].ChangeSprite();
+			butts[i].ChangeState(KolamButton::Pressed);
 		}
+		pev = i;
 	}
 }
 
@@ -138,10 +276,7 @@ void GlobalDec() {
 	THICK = 0.3 * SPACE;
 }
 
-
 void RenderButtons() {
-	SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
-	SDL_RenderClear(gRenderer);
 
 	int a = dot.GetWidth();
 	for (int ri = 0, x = 2 * SPACE + OffsetX, i = 0; ri < COLS; ri++, x += 4 * SPACE) {
@@ -150,10 +285,10 @@ void RenderButtons() {
 			dot.Render(x - a / 2, y - a / 2);
 
 			//0->left 1-> bottom 2-> right 3->top
-			butts[i].render();
-			butts[i + 2].render();
-			butts[i + 1].render();
-			butts[i + 3].render();
+			butts[i].Render();
+			butts[i + 2].Render();
+			butts[i + 1].Render();
+			butts[i + 3].Render();
 
 		}
 	}
@@ -178,200 +313,13 @@ void DrawButtons() {
 			dot.Render(x - a / 2, y - a / 2);
 
 			//0->left 1-> bottom 2-> right 3->top
-			butts[i].setPosition(x - 2 * SPACE, y - SPACE, left);
-			butts[i + 2].setPosition(x + SPACE - THICK, y - SPACE, right);
-			butts[i + 1].setPosition(x - 2 * SPACE, y + SPACE, bottom);
-			butts[i + 3].setPosition(x - 2 * SPACE, y - 2 * SPACE, top);
+			butts[i].SetPosition(x - 2 * SPACE, y - SPACE, left);
+			butts[i + 2].SetPosition(x + SPACE - THICK, y - SPACE, right);
+			butts[i + 1].SetPosition(x - 2 * SPACE, y + SPACE, bottom);
+			butts[i + 3].SetPosition(x - 2 * SPACE, y - 2 * SPACE, top);
 
 		}
 	}
-}
-
-int SDL_RenderDrawCircle(SDL_Renderer* renderer, int x, int y, int radius)
-{
-	int offsetx, offsety, d;
-	int status;
-
-	//CHECK_RENDERER_MAGIC(renderer, -1);
-
-	offsetx = 0;
-	offsety = radius;
-	d = radius - 1;
-	status = 0;
-
-	while (offsety >= offsetx) {
-		status += SDL_RenderDrawPoint(renderer, x + offsetx, y + offsety);
-		status += SDL_RenderDrawPoint(renderer, x + offsety, y + offsetx);
-		status += SDL_RenderDrawPoint(renderer, x - offsetx, y + offsety);
-		status += SDL_RenderDrawPoint(renderer, x - offsety, y + offsetx);
-		status += SDL_RenderDrawPoint(renderer, x + offsetx, y - offsety);
-		status += SDL_RenderDrawPoint(renderer, x + offsety, y - offsetx);
-		status += SDL_RenderDrawPoint(renderer, x - offsetx, y - offsety);
-		status += SDL_RenderDrawPoint(renderer, x - offsety, y - offsetx);
-
-		if (status < 0) {
-			status = -1;
-			break;
-		}
-
-		if (d >= 2 * offsetx) {
-			d -= 2 * offsetx + 1;
-			offsetx += 1;
-		}
-		else if (d < 2 * (radius - offsety)) {
-			d += 2 * offsety - 1;
-			offsety -= 1;
-		}
-		else {
-			d += 2 * (offsety - offsetx - 1);
-			offsety -= 1;
-			offsetx += 1;
-		}
-	}
-
-	return status;
-}
-
-int SDL_RenderFillCircle(SDL_Renderer* renderer, int x, int y, int radius) {
-	int offsetx, offsety, d;
-	int status;
-
-	offsetx = 0;
-	offsety = radius;
-	d = radius - 1;
-	status = 0;
-
-	while (offsety >= offsetx) {
-
-		status += SDL_RenderDrawLine(renderer, x - offsety, y + offsetx,
-			x + offsety, y + offsetx);
-		status += SDL_RenderDrawLine(renderer, x - offsetx, y + offsety,
-			x + offsetx, y + offsety);
-		status += SDL_RenderDrawLine(renderer, x - offsetx, y - offsety,
-			x + offsetx, y - offsety);
-		status += SDL_RenderDrawLine(renderer, x - offsety, y - offsetx,
-			x + offsety, y - offsetx);
-
-		if (status < 0) {
-			status = -1;
-			break;
-		}
-
-		if (d >= 2 * offsetx) {
-			d -= 2 * offsetx + 1;
-			offsetx += 1;
-		}
-		else if (d < 2 * (radius - offsety)) {
-			d += 2 * offsety - 1;
-			offsety -= 1;
-		}
-		else {
-			d += 2 * (offsety - offsetx - 1);
-			offsety -= 1;
-			offsetx += 1;
-		}
-	}
-
-	return status;
-}
-
-bool MakeDot() {
-	bool pass = true;
-	
-	if (!dot.CreateBlankSheet(SPACE / 3, SPACE / 3, SDL_TEXTUREACCESS_TARGET)) {
-		printf("Failed to make dot sprite\n");
-		pass = false;
-	}
-	else {
-		dot.SetAsRenderTarget();
-		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0XFF);
-		SDL_RenderClear(gRenderer);
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
-
-		SDL_RenderFillCircle(gRenderer, SPACE / 6, SPACE / 6, SPACE / 7);
-		SDL_SetRenderTarget(gRenderer, NULL);
-
-	}
-	return pass;
-}
-
-bool MakeSheetUD() {
-	bool pass = true;
-	if (!sheetUD.CreateBlankSheet(SPACE * 4, SPACE * 2, SDL_TEXTUREACCESS_TARGET)) {
-		printf("Failed to load button sprite\n");
-		pass = false;
-	}
-	else {
-		sheetUD.SetAsRenderTarget();
-
-		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0XFF);
-		SDL_RenderClear(gRenderer);
-		float y;
-
-		SDL_Rect rec = { 0,0,THICK,1 };
-		//Draws the triangle
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
-		for (float x = SPACE;x < 2 * SPACE;x += 1) {
-			y = -x + 2 * SPACE;
-			rec.x = x - THICK / 2; rec.y = y;
-			SDL_RenderFillRect(gRenderer, &rec);
-		}
-		for (float x = 2 * SPACE;x < 3 * SPACE;x += 1) {
-			y = x - 2 * SPACE;
-			rec.x = x - THICK/ 2; rec.y = y;
-			SDL_RenderFillRect(gRenderer, &rec);
-		}
-		//Draws the circle
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
-		for (int x = -THICK * 0.3; x < 0.4 * THICK; x++) {
-			SDL_RenderDrawCircle(gRenderer, 2 * SPACE, 3 * SPACE, (1.414 * SPACE) + x);
-		}
-
-		SDL_SetRenderTarget(gRenderer, NULL);
-
-		ImgUD[0] = { 0,0, SPACE * 4, SPACE };
-		ImgUD[1] = { 0, SPACE, SPACE * 4, SPACE };
-	}
-	return pass;
-}
-
-bool MakeSheetLR() {
-	bool pass = true;
-	if (!sheetLR.CreateBlankSheet(2 * (SPACE + THICK), 2 * SPACE, SDL_TEXTUREACCESS_TARGET)) {
-		printf("Failed to load button sprite\n");
-		pass = false;
-	}
-	else {
-		sheetLR.SetAsRenderTarget();
-
-		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0XFF);
-		SDL_RenderClear(gRenderer);
-		float y;
-		SDL_Rect rec = { 0,0,1,THICK };
-
-		//Draws lines
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
-		for (float x = sheetLR.GetWidth() / 2;x < sheetLR.GetWidth();x += 1) {
-			y = -SPACE + x - 2 * THICK;
-			rec.x = x; rec.y = y - THICK / 2;
-			SDL_RenderFillRect(gRenderer, &rec);
-		}
-		for (float x = sheetLR.GetWidth() / 2;x < sheetLR.GetWidth();x += 1) {
-			y = 3 * SPACE - x + THICK * 2;
-			rec.x = x; rec.y = y - THICK / 2;
-			SDL_RenderFillRect(gRenderer, &rec);
-		}
-		//Draws the circle
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
-		for (int x = -0.3 * THICK; x < 0.4 * THICK; x++) {
-			SDL_RenderDrawCircle(gRenderer, -SPACE + THICK, SPACE, (1.414 * SPACE) + x);
-		}
-
-		SDL_SetRenderTarget(gRenderer, NULL);
-		ImgLR[1] = { 0,0, sheetLR.GetWidth() / 2, sheetLR.GetHeight() };
-		ImgLR[0] = { sheetLR.GetWidth() / 2,0, sheetLR.GetWidth() / 2, sheetLR.GetHeight() };
-	}
-	return pass;
 }
 
 int ActiveButtonID(buttonType &place) {
@@ -430,4 +378,12 @@ int CheckInside(buttonType &place) {
 		return 1;
 	}
 	return inn;
+}
+
+void ClearAll() {
+	for (int i = 0;i < TOTAL_BUTTONS;i++) {
+		butts[i].ChangeSprite(2);
+		//butts[i].Render();
+	}
+		
 }

@@ -35,7 +35,7 @@ KolamButton::~KolamButton() {
 	bh = NULL;
 }
 
-void KolamButton::setPosition(int x, int y, buttonType w) {
+void KolamButton::SetPosition(int x, int y, buttonType w) {
 	pos.x = x;
 	pos.y = y;
 	place = w;
@@ -57,7 +57,7 @@ void KolamButton::setPosition(int x, int y, buttonType w) {
 
 }
 
-void KolamButton::render() {
+void KolamButton::Render() {
 	SDL_Color bgColor, borderColor;
 
 	borderColor = ButtonStateBorder[st];
@@ -88,10 +88,13 @@ void KolamButton::render() {
 	SDL_RenderDrawRect(gRenderer, &a);
 }
 
-void KolamButton::changeSprite() {
-	cur = (cur + 1) % 3;
+void KolamButton::ChangeSprite(int n) {
+	if (n == -1)
+		cur = (cur + 1) % 3;
+	else
+		cur = n;
 }
 
-void KolamButton::changeState(buttonState newst) {
+void KolamButton::ChangeState(buttonState newst) {
 	st = newst;
 }

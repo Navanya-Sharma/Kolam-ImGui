@@ -23,3 +23,9 @@ class Texture{
 
 extern Texture dot, sheetUD, sheetLR;
 
+int SDL_RenderFillCircle(SDL_Renderer* renderer, int x, int y, int radius);
+int SDL_RenderDrawCircle(SDL_Renderer* renderer, int x, int y, int radius);
+
+bool MakeDot();
+bool MakeSheetLR();
+bool MakeSheetUD();

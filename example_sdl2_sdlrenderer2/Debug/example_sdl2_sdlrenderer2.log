@@ -1,32 +1,24 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\Debug\) contains files shared from another project (example_sdl2_sdlrenderer2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   DrawKolam.cpp
 C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\core.h(11,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(116,13): warning C4458: declaration of 'place' hides class member
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(137,19): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(138,14): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(182,39): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(311,24): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(311,24): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(314,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(316,14): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(316,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(319,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(321,14): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(321,34): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(326,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(327,74): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(340,34): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(350,26): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(350,26): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(354,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(356,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(356,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(359,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(361,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(361,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(366,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(367,75): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(367,43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(67,17): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(82,8): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(83,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(92,7): warning C4456: declaration of 'y' hides previous local declaration
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(92,9): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(93,35): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(130,21): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(132,27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(133,35): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(155,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(156,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(159,49): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(173,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(174,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(179,45): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(275,19): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(276,14): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(317,39): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\memory(3300,9): warning C5205: delete of an abstract class 'Scene' that has a non-virtual destructor results in undefined behavior
-C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(396,1): warning C4701: potentially uninitialized local variable 'i' used
+C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\DrawKolam.cpp(344,1): warning C4701: potentially uninitialized local variable 'i' used
   example_sdl2_sdlrenderer2.vcxproj -> C:\Users\sharm\source\repos\Kolam ImGui\example_sdl2_sdlrenderer2\Debug\Kolam.exe

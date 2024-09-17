@@ -48,10 +48,10 @@ void PopUpMenu::Update()
 
     //NAME
     ImGui::Text("Name your Kolam: ");ImGui::SameLine();
-    static char buf1[32] = "";
+    static char buf1[32] = "My Digital Kolam";
     int textX = ImGui::GetCursorPosX() + 60;
     ImGui::PushItemWidth(280);
-    ImGui::InputText(" ", buf1, 32);
+    ImGui::InputText(" ", buf1, 32, ImGuiInputTextFlags_AutoSelectAll);
     NAME = buf1;
 
     //ROWS

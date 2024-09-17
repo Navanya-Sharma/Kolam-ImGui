@@ -23,10 +23,10 @@ class KolamButton {
 		};
 		KolamButton();
 		~KolamButton();
-		void setPosition(int x, int y, buttonType w);
-		void render();
-		void changeState(buttonState newst);
-		void changeSprite();
+		void SetPosition(int x, int y, buttonType w);
+		void Render();
+		void ChangeState(buttonState newst);
+		void ChangeSprite(int n=-1);
 	private:
 
 		SDL_Point pos;

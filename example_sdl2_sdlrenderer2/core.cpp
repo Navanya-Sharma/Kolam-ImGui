@@ -23,7 +23,7 @@ int SCREEN_WIDTH = 1000;
 int SCREEN_HEIGHT = 600;
 int SPACE, ROWS, COLS, OffsetX, OffsetY, TOTAL_BUTTONS, MaxTHICK;
 float THICK;
-char * NAME ;
+char * NAME ="My Digital Kolam";
 
 
 bool init() {
