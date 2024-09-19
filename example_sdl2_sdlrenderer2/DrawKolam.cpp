@@ -15,6 +15,11 @@ bool DrawKolam::Init() {
 		printf("In draw kolam class texture not initiliazed!");
 		pass = false;
 	}
+	else {
+
+		butts = new KolamButton[TOTAL_BUTTONS];
+		DrawButtons();
+	}
 	return pass;
 	
 }
@@ -115,7 +120,7 @@ void DrawKolam::Update() {
 			Mix_PlayChannel(-1, buttSound, 0);
 			if (R != ROWS || C != COLS) {
 				ROWS = R; COLS = C;
-				InitTextures();
+				Init();
 			}
 			ImGui::CloseCurrentPopup();
 		}
@@ -137,30 +142,13 @@ void DrawKolam::Update() {
 	ImGui::SetNextWindowPos(ImVec2(70, y), ImGuiCond_Appearing, ImVec2(0.0f, 0.0f));
 	if (ImGui::BeginPopup("Bursh Size Popup"))
 	{
-		ImGui::PushItemWidth(180);
-		static ImVec4 color = FRcolor;
-		static int thick=THICK;
-		ImGui::SliderInt("##", &thick, 1.0f, MaxTHICK);
-		//printf("thicl %d\n", thick);
-		ImGui::SameLine();
-		ImGui::ColorEdit4("clear color", (float*)&color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel); // Edit 3 floats representing a color
 		
-		BoldFont->Scale = 0.6;
-		ImGui::PushFont(BoldFont);
-		ImGui::Indent(60);
-		if (ImGui::Button(" Okay! ", ImVec2(100, 35))) {
-			Mix_PlayChannel(-1, buttSound, 0);
-			printf("Space %d, Thick %f\n", SPACE, THICK);
-			if (thick != THICK||(FRcolor.x!=color.x|| FRcolor.y != color.y || FRcolor.z != color.z || FRcolor.w != color.w )) {
-				THICK = (float)thick;
-				FRcolor = color;
-				InitTextures();
-			}
-			printf("Space %d, Thick %f", SPACE, THICK);
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::PopFont();
-		BoldFont->Scale = 1;
+		int thick = THICK;
+		ImGui::ColorEdit4("clear color", (float*)&FRcolor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel); // Edit 3 floats representing a color
+		ImGui::SameLine();
+		ImGui::PushItemWidth(180);
+		ImGui::SliderInt("##", &thick, 1.0f, MaxTHICK);
+		THICK = thick;
 
 		ImGui::EndPopup();
 	}
@@ -225,7 +213,7 @@ void DrawKolam::Update() {
 }
 
 void DrawKolam::Render() {
-	
+	InitTextures();
 	ImGui::Render();
 	
 	RenderButtons();
@@ -264,6 +252,7 @@ void GlobalDec() {
 	SPACE = std::min(wd/ (4 * COLS), ht/ (4 * ROWS));
 	OffsetX = (wd - 4 * SPACE * COLS) / 2+70;
 	OffsetY = (ht - 4 * SPACE * ROWS) / 2+70;
+
 	TOTAL_BUTTONS = 4 * ROWS * COLS;
 	MaxTHICK = 0.8*SPACE;// 2(2-root(2))*thick -> where the outer circle will touch the boundary
 	if(THICK == 0.0)
@@ -300,7 +289,6 @@ void DrawButtons() {
 
 	//Decl*/
 	//KolamButton* butts;
-	butts = new KolamButton[TOTAL_BUTTONS];
 
 	int a = dot.GetWidth();
 	for (int ri = 0, x = 2 * SPACE + OffsetX, i = 0; ri < COLS; ri++,x += 4 * SPACE) {
@@ -419,9 +407,8 @@ bool InitTextures() {
 	GlobalDec();
 	if (MakeDot(FRcolor) && MakeSheetLR(FRcolor) && MakeSheetUD(FRcolor))
 	{
-		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
-		SDL_RenderClear(gRenderer);
-		DrawButtons();
+		
+		//DrawButtons();
 	}
 	else {
 		printf("Textures not made");

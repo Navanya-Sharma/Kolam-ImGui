@@ -268,6 +268,10 @@ bool MakeSheetUD(ImVec4 color) {
 			SDL_RenderFillRect(gRenderer, &rec);
 		}
 		for (float x = 2 * SPACE;x < 3 * SPACE;x += 1) {
+
+
+
+
 			y = x - 2 * SPACE;
 			rec.x = x - THICK / 2; rec.y = y;
 			SDL_RenderFillRect(gRenderer, &rec);
