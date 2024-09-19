@@ -63,6 +63,10 @@ bool Texture::CreateBlankSheet(int width, int height, SDL_TextureAccess access)
 	return text != NULL;
 }
 
+void Texture::SetBlendMode(SDL_BlendMode a) {
+	SDL_SetTextureBlendMode(text, a);
+}
+
 void Texture::SetAsRenderTarget()
 {
 	SDL_SetRenderTarget(gRenderer, text);
@@ -218,7 +222,7 @@ int SDL_RenderFillCircle(SDL_Renderer* renderer, int x, int y, int radius) {
 	return status;
 }
 
-bool MakeDot() {
+bool MakeDot(ImVec4 color) {
 	bool pass = true;
 
 	if (!dot.CreateBlankSheet(SPACE / 3, SPACE / 3, SDL_TEXTUREACCESS_TARGET)) {
@@ -226,10 +230,12 @@ bool MakeDot() {
 		pass = false;
 	}
 	else {
+		dot.SetBlendMode(SDL_BLENDMODE_BLEND);
 		dot.SetAsRenderTarget();
-		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0XFF);
+		SDL_SetRenderDrawColor(gRenderer, 0,0,0,0);
 		SDL_RenderClear(gRenderer);
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, (Uint8)(color.x * 255), (Uint8)(color.y * 255), (Uint8)(color.z * 255), (Uint8)(color.w * 255));
+
 
 		SDL_RenderFillCircle(gRenderer, SPACE / 6, SPACE / 6, SPACE / 7);
 		SDL_SetRenderTarget(gRenderer, NULL);
@@ -238,22 +244,24 @@ bool MakeDot() {
 	return pass;
 }
 
-bool MakeSheetUD() {
+bool MakeSheetUD(ImVec4 color) {
 	bool pass = true;
 	if (!sheetUD.CreateBlankSheet(SPACE * 4, SPACE * 2, SDL_TEXTUREACCESS_TARGET)) {
 		printf("Failed to load button sprite\n");
 		pass = false;
 	}
 	else {
+		sheetUD.SetBlendMode(SDL_BLENDMODE_BLEND);
 		sheetUD.SetAsRenderTarget();
 
-		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0XFF);
+		SDL_SetRenderDrawColor(gRenderer, 0,0,0,0);
 		SDL_RenderClear(gRenderer);
 		float y;
 
 		SDL_Rect rec = { 0,0,THICK,1 };
 		//Draws the triangle
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, (Uint8)(color.x * 255), (Uint8)(color.y * 255), (Uint8)(color.z * 255), (Uint8)(color.w * 255));
+
 		for (float x = SPACE;x < 2 * SPACE;x += 1) {
 			y = -x + 2 * SPACE;
 			rec.x = x - THICK / 2; rec.y = y;
@@ -265,7 +273,8 @@ bool MakeSheetUD() {
 			SDL_RenderFillRect(gRenderer, &rec);
 		}
 		//Draws the circle
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, (Uint8)(color.x * 255), (Uint8)(color.y * 255), (Uint8)(color.z * 255), (Uint8)(color.w * 255));
+
 		for (int x = -THICK * 0.3; x < 0.4 * THICK; x++) {
 			SDL_RenderDrawCircle(gRenderer, 2 * SPACE, 3 * SPACE, (1.414 * SPACE) + x);
 		}
@@ -278,22 +287,24 @@ bool MakeSheetUD() {
 	return pass;
 }
 
-bool MakeSheetLR() {
+bool MakeSheetLR(ImVec4 color) {
 	bool pass = true;
 	if (!sheetLR.CreateBlankSheet(2 * (SPACE + THICK), 2 * SPACE, SDL_TEXTUREACCESS_TARGET)) {
 		printf("Failed to load button sprite\n");
 		pass = false;
 	}
 	else {
+		sheetLR.SetBlendMode(SDL_BLENDMODE_BLEND);
 		sheetLR.SetAsRenderTarget();
 
-		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0XFF);
+		SDL_SetRenderDrawColor(gRenderer, 0,0,0,0);
 		SDL_RenderClear(gRenderer);
 		float y;
 		SDL_Rect rec = { 0,0,1,THICK };
 
 		//Draws lines
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, (Uint8)(color.x * 255), (Uint8)(color.y * 255), (Uint8)(color.z * 255), (Uint8)(color.w * 255));
+
 		for (float x = sheetLR.GetWidth() / 2;x < sheetLR.GetWidth();x += 1) {
 			y = -SPACE + x - 2 * THICK;
 			rec.x = x; rec.y = y - THICK / 2;
@@ -305,7 +316,8 @@ bool MakeSheetLR() {
 			SDL_RenderFillRect(gRenderer, &rec);
 		}
 		//Draws the circle
-		SDL_SetRenderDrawColor(gRenderer, 0XFF, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, (Uint8)(color.x * 255), (Uint8)(color.y * 255), (Uint8)(color.z * 255), (Uint8)(color.w * 255));
+
 		for (int x = -0.3 * THICK; x < 0.4 * THICK; x++) {
 			SDL_RenderDrawCircle(gRenderer, -SPACE + THICK, SPACE, (1.414 * SPACE) + x);
 		}

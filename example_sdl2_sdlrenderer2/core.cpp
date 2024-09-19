@@ -22,7 +22,7 @@ ImGuiStyle* style = NULL;
 int SCREEN_WIDTH = 1000;
 int SCREEN_HEIGHT = 600;
 int SPACE, ROWS, COLS, OffsetX, OffsetY, TOTAL_BUTTONS, MaxTHICK;
-float THICK;
+float THICK=0.0;
 char * NAME ="My Digital Kolam";
 
 

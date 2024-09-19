@@ -3,15 +3,13 @@
 #include "core.h"
 #include "Texture.h"
 
-
+extern SDL_Color ButtonStateColors[4];
 enum buttonType {
 	top,
 	right,
 	bottom,
 	left,
 };
-
-extern SDL_Color ButtonStateColors[4], ButtonStateBorder[4];
 
 class KolamButton {
 	public:
@@ -24,7 +22,7 @@ class KolamButton {
 		KolamButton();
 		~KolamButton();
 		void SetPosition(int x, int y, buttonType w);
-		void Render();
+		void Render(ImVec4 BGcolor);
 		void ChangeState(buttonState newst);
 		void ChangeSprite(int n=-1);
 	private:

@@ -2,12 +2,8 @@
 
 KolamButton* butts = NULL;
 
-SDL_Color ButtonStateColors[4] = { 
-		{ 0xCB, 0x68, 0x43,0 }, //Outside
-		{ 0xCB, 0x68, 0x43,0 },
-		{ 0xCB, 0x68, 0x43,0 },
-		{ 0xCB, 0x68, 0x43,0 } };
-SDL_Color ButtonStateBorder[4] = {
+
+SDL_Color ButtonStateColors[4] = {
 		{ 0xFC, 0x72, 0x52, 0 }, //Outside
 		{ 255,255,255,0 }, //Inside
 		{ 255,255,255,0 }, //pressed
@@ -50,22 +46,15 @@ void KolamButton::SetPosition(int x, int y, buttonType w) {
 	}
 	//render();
 
-	SDL_Rect rec = { pos.x, pos.y, bw, bh };
-	SDL_SetRenderDrawColor(gRenderer, 0xF2, 0X7C, 0X50, 0xFF);
-	SDL_RenderDrawRect(gRenderer, &rec);
-
-
 }
 
-void KolamButton::Render() {
-	SDL_Color bgColor, borderColor;
-
-	borderColor = ButtonStateBorder[st];
-	bgColor = ButtonStateColors[st];
+void KolamButton::Render(ImVec4 BGcolor) {
+	
+	SDL_Color borderColor = ButtonStateColors[st];
 
 	//Clear the screen
 	SDL_Rect a = { pos.x, pos.y, bw, bh };
-	SDL_SetRenderDrawColor(gRenderer, bgColor.r, bgColor.g, bgColor.b, 0xFF);
+	SDL_SetRenderDrawColor(gRenderer, (Uint8)(BGcolor.x * 255), (Uint8)(BGcolor.y * 255), (Uint8)(BGcolor.z * 255), (Uint8)(BGcolor.w * 255));
 	SDL_RenderFillRect(gRenderer, &a);
 
 

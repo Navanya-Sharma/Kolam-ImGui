@@ -1,5 +1,6 @@
 #pragma once
 #include<SDL.h>
+#include<imgui.h>
 
 class Texture{
 	public:
@@ -12,6 +13,7 @@ class Texture{
 		void Render(int x, int y, SDL_Rect* clip = NULL, int desW = NULL, int desH = NULL, double angle = 0.0, int pop = 0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE);
 		int GetHeight();
 		int GetWidth();
+		void SetBlendMode(SDL_BlendMode a);
 		//bool LoadFromRenderedText(std::string textureText, SDL_Color textColor, int textWidth, int bold = 0);
 
 	private:
@@ -26,6 +28,6 @@ extern Texture dot, sheetUD, sheetLR;
 int SDL_RenderFillCircle(SDL_Renderer* renderer, int x, int y, int radius);
 int SDL_RenderDrawCircle(SDL_Renderer* renderer, int x, int y, int radius);
 
-bool MakeDot();
-bool MakeSheetLR();
-bool MakeSheetUD();
+bool MakeDot(ImVec4 color);
+bool MakeSheetLR(ImVec4 color);
+bool MakeSheetUD(ImVec4 color);

@@ -26,4 +26,10 @@ int CheckInside(buttonType &place);
 
 void ClearAll();
 
+bool InitImGui();
+bool InitTextures();
+
+extern ImVec4 BGcolor; 
+extern ImVec4 FRcolor;
+
 

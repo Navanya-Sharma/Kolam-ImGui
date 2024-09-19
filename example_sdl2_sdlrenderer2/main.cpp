@@ -55,7 +55,7 @@ int main(int, char**){
                 SDL_Delay(10);
                 continue;
             }
-
+            
             gSceneManager.Update();
 
             // Rendering

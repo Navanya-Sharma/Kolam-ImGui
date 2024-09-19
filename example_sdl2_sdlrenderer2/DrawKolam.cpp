@@ -3,44 +3,27 @@
 
 #include "IconsFontAwesome.h"
 int pev = 0;
-
+ImVec4 BGcolor = ImVec4(0.796078f, 0.407843f, 0.262745f, 1.00f);
+ImVec4 FRcolor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 bool DrawKolam::Init() {	
-	GlobalDec();
-	if (MakeDot() && MakeSheetLR() && MakeSheetUD())
-	{
-		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
-		SDL_RenderClear(gRenderer);
-
-		DrawButtons();
-
-		style = &ImGui::GetStyle();
-
-		style->Colors[ImGuiCol_Button] = ImVec4(((float)0xCC / (float)255), ((float)0x6B / (float)255), ((float)0x47 / (float)255), 1.f);
-		style->Colors[ImGuiCol_ButtonHovered] = ImVec4(((float)0xCC / (float)255), ((float)0x4A / (float)255), ((float)0x19 / (float)255), 1.f);
-		style->Colors[ImGuiCol_ButtonActive] = ImVec4(((float)0x99 / (float)255), ((float)0x41 / (float)255), ((float)0x1F / (float)255), 1.f);
-		style->Colors[ImGuiCol_FrameBg] = ImVec4(((float)0x99 / (float)255), ((float)0x67 / (float)255), ((float(0x54) / (float)255)), 1.f);
-
-		style->WindowPadding = ImVec2(10, 10);
-		style->FramePadding = ImVec2(10, 10);
-
-		style->ItemSpacing = ImVec2(20, 20);
-		style->ItemInnerSpacing = ImVec2(30, 30);
-		
-
-		style->WindowRounding = 0;
-		style->FrameRounding = 20;
-		return true;
+	bool pass = true;
+	if(!InitImGui()) {
+			printf("In draw kolam class imgui not initiliazed!");
+			pass = false;
 	}
-	else {
-		printf("Textures not made");
-		return false;
+	if (!InitTextures()) {
+		printf("In draw kolam class texture not initiliazed!");
+		pass = false;
 	}
-	
+	return pass;
 	
 }
 
 void DrawKolam::Update() {
-	SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
+	//SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
+	SDL_SetRenderDrawColor(gRenderer, (Uint8)(BGcolor.x * 255), (Uint8)(BGcolor.y * 255), (Uint8)(BGcolor.z * 255), (Uint8)(BGcolor.w * 255));
+
+	//SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(gRenderer);
 
 	ImGui_ImplSDLRenderer2_NewFrame();
@@ -70,18 +53,16 @@ void DrawKolam::Update() {
 	ImGui::SetNextWindowSize(ImVec2(70, ImGui::GetIO().DisplaySize.y-70));
 	ImGui::Begin("Sidebar", nullptr, ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
-	
-
+	//RESIZE 
 	if (ImGui::Button(ICON_FA_TABLE_CELLS,ButtonSize))
 	{
 		Mix_PlayChannel(-1, buttSound, 0);
 		ImGui::OpenPopup("Resize");
 	}
 	ImGui::SetItemTooltip("Resize");
-
-	int y = ImGui::GetMousePos().y;
+	
+	int y = ImGui::GetCursorPos().y;
 	ImGui::SetNextWindowPos(ImVec2(70, y), ImGuiCond_Appearing, ImVec2(0.0f, 0.0f));
-
 	if (ImGui::BeginPopup("Resize")) {
 		//ROWS
 		static int R=ROWS,C=COLS;
@@ -129,13 +110,14 @@ void DrawKolam::Update() {
 
 		BoldFont->Scale = 0.6;
 		ImGui::PushFont(BoldFont);
-		y = ImGui::GetCursorPosY();
-		ImGui::SetCursorPos(ImVec2(100, y));
+		ImGui::Indent(90);
 		if (ImGui::Button(" Okay! ",ImVec2(100,35))) {
 			Mix_PlayChannel(-1, buttSound, 0);
 			if (R != ROWS || C != COLS) {
-				Init();
+				ROWS = R; COLS = C;
+				InitTextures();
 			}
+			ImGui::CloseCurrentPopup();
 		}
 		ImGui::PopFont();
 		BoldFont->Scale = 1;
@@ -143,8 +125,7 @@ void DrawKolam::Update() {
 	}
 
 
-
-
+	//BRUSH SIZE
 	if (ImGui::Button(ICON_FA_BRUSH, ButtonSize))
 	{
 		Mix_PlayChannel(-1, buttSound, 0);
@@ -152,39 +133,53 @@ void DrawKolam::Update() {
 	}
 	ImGui::SetItemTooltip("Brush Size");
 
-	y = ImGui::GetMousePos().y;
+	y = ImGui::GetCursorPos().y;
 	ImGui::SetNextWindowPos(ImVec2(70, y), ImGuiCond_Appearing, ImVec2(0.0f, 0.0f));
 	if (ImGui::BeginPopup("Bursh Size Popup"))
 	{
-		ImGui::SliderFloat("Brush Size", &THICK, 0.1f,MaxTHICK);
-		static float col[4];
-		ImGui::ColorPicker4("color4",col);
+		ImGui::PushItemWidth(180);
+		static ImVec4 color = FRcolor;
+		static int thick=THICK;
+		ImGui::SliderInt("##", &thick, 1.0f, MaxTHICK);
+		//printf("thicl %d\n", thick);
+		ImGui::SameLine();
+		ImGui::ColorEdit4("clear color", (float*)&color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel); // Edit 3 floats representing a color
+		
+		BoldFont->Scale = 0.6;
+		ImGui::PushFont(BoldFont);
+		ImGui::Indent(60);
+		if (ImGui::Button(" Okay! ", ImVec2(100, 35))) {
+			Mix_PlayChannel(-1, buttSound, 0);
+			printf("Space %d, Thick %f\n", SPACE, THICK);
+			if (thick != THICK||(FRcolor.x!=color.x|| FRcolor.y != color.y || FRcolor.z != color.z || FRcolor.w != color.w )) {
+				THICK = (float)thick;
+				FRcolor = color;
+				InitTextures();
+			}
+			printf("Space %d, Thick %f", SPACE, THICK);
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::PopFont();
+		BoldFont->Scale = 1;
+
 		ImGui::EndPopup();
 	}
 
+
+	//BACKGROUND COLOR
 	if (ImGui::Button(ICON_FA_DROPLET, ButtonSize))
 	{
 		Mix_PlayChannel(-1, buttSound, 0);
-		ImGui::OpenPopup("BackPopup");
-		
+		ImGui::OpenPopup("Background Color");
 	}
 	ImGui::SetItemTooltip("Background Color");
-
-	y = ImGui::GetMousePos().y;
+	y = ImGui::GetCursorPos().y;
 	ImGui::SetNextWindowPos(ImVec2(70, y), ImGuiCond_Appearing, ImVec2(0.0f, 0.0f));
-
-	if (ImGui::BeginPopup("BackPopup"))
+	if (ImGui::BeginPopup("Background Color"))
 	{
-		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-		ImGui::SliderFloat("float", &THICK, 0.0f, MaxTHICK);            // Edit 1 float using a slider from 0.0f to 1.0f
-		ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-
-
+		ImGui::ColorPicker4("clear color", (float*)&BGcolor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel); 
 		ImGui::EndPopup();
 	}
-	
-
 	
 	if (ImGui::Button(ICON_FA_FOLDER_OPEN, ButtonSize))
 	{
@@ -231,9 +226,7 @@ void DrawKolam::Update() {
 
 void DrawKolam::Render() {
 	
-	
 	ImGui::Render();
-
 	
 	RenderButtons();
 	
@@ -272,8 +265,11 @@ void GlobalDec() {
 	OffsetX = (wd - 4 * SPACE * COLS) / 2+70;
 	OffsetY = (ht - 4 * SPACE * ROWS) / 2+70;
 	TOTAL_BUTTONS = 4 * ROWS * COLS;
-	MaxTHICK = 1.172 * SPACE;// 2(2-root(2))*thick -> where the outer circle will touch the boundary
-	THICK = 0.3 * SPACE;
+	MaxTHICK = 0.8*SPACE;// 2(2-root(2))*thick -> where the outer circle will touch the boundary
+	if(THICK == 0.0)
+		THICK = 0.3 * SPACE;
+	else
+		THICK = SDL_clamp(THICK, 1.0f, MaxTHICK);
 }
 
 void RenderButtons() {
@@ -285,10 +281,10 @@ void RenderButtons() {
 			dot.Render(x - a / 2, y - a / 2);
 
 			//0->left 1-> bottom 2-> right 3->top
-			butts[i].Render();
-			butts[i + 2].Render();
-			butts[i + 1].Render();
-			butts[i + 3].Render();
+			butts[i].Render(BGcolor);
+			butts[i + 2].Render(BGcolor);
+			butts[i + 1].Render(BGcolor);
+			butts[i + 3].Render(BGcolor);
 
 		}
 	}
@@ -386,4 +382,50 @@ void ClearAll() {
 		//butts[i].Render();
 	}
 		
+}
+
+bool InitImGui() {
+	
+	
+	ImGui::GetStyle() = ImGuiStyle();
+	style = &ImGui::GetStyle();
+
+	style->Colors[ImGuiCol_Button] = ImVec4(((float)0xCC / (float)255), ((float)0x6B / (float)255), ((float)0x47 / (float)255), 1.f);
+	style->Colors[ImGuiCol_ButtonHovered] = ImVec4(((float)0xCC / (float)255), ((float)0x4A / (float)255), ((float)0x19 / (float)255), 1.f);
+	style->Colors[ImGuiCol_ButtonActive] = ImVec4(((float)0x99 / (float)255), ((float)0x41 / (float)255), ((float)0x1F / (float)255), 1.f);
+	style->Colors[ImGuiCol_FrameBg] = ImVec4(((float)0x99 / (float)255), ((float)0x67 / (float)255), ((float(0x54) / (float)255)), 1.f);
+	
+	style->Colors[ImGuiCol_FrameBgHovered] = ImVec4(((float)0x99 / (float)255), ((float)0x4D / (float)255), ((float(0x2C) / (float)255)), 1.f);
+	style->Colors[ImGuiCol_FrameBgActive] = ImVec4(((float)0x99 / (float)255), ((float)0x4D / (float)255), ((float)0x2C / (float)255), 1.f);
+	style->Colors[ImGuiCol_SliderGrab] = ImVec4(((float)0xCC / (float)255), ((float)0x6B / (float)255), ((float)0x47 / (float)255), 1.f);
+	style->Colors[ImGuiCol_SliderGrabActive] = ImVec4(((float)0xCC / (float)255), ((float)0x4A / (float)255), ((float)0x19 / (float)255), 1.f);
+
+
+	style->WindowPadding = ImVec2(10, 10);
+	style->FramePadding = ImVec2(10, 5);
+
+	style->ItemSpacing = ImVec2(20, 20);
+	style->ItemInnerSpacing = ImVec2(30, 30);
+
+
+	style->WindowRounding = 0;
+	style->FrameRounding = 15;
+	style->GrabRounding = 10;
+	return true;
+}
+
+bool InitTextures() {
+	bool pass = true;
+	GlobalDec();
+	if (MakeDot(FRcolor) && MakeSheetLR(FRcolor) && MakeSheetUD(FRcolor))
+	{
+		SDL_SetRenderDrawColor(gRenderer, 0xCB, 0x68, 0x43, 0xFF);
+		SDL_RenderClear(gRenderer);
+		DrawButtons();
+	}
+	else {
+		printf("Textures not made");
+		pass = false;
+	}
+	return pass;
 }
