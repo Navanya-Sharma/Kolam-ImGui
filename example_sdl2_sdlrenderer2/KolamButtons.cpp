@@ -19,8 +19,6 @@ KolamButton::KolamButton() {
 	cur = 2;
 	bw = SPACE + THICK;
 	bh = 2 * SPACE;
-
-
 }
 
 KolamButton::~KolamButton() {
@@ -87,3 +85,9 @@ void KolamButton::ChangeSprite(int n) {
 void KolamButton::ChangeState(buttonState newst) {
 	st = newst;
 }
+
+int KolamButton::GetSprite()
+{
+	return cur;
+}
+

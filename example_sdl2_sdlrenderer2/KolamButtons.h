@@ -25,6 +25,7 @@ class KolamButton {
 		void Render(ImVec4 BGcolor);
 		void ChangeState(buttonState newst);
 		void ChangeSprite(int n=-1);
+		int GetSprite();
 	private:
 
 		SDL_Point pos;

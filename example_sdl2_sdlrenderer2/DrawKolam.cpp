@@ -5,7 +5,7 @@
 int pev = 0;
 ImVec4 BGcolor = ImVec4(0.796078f, 0.407843f, 0.262745f, 1.00f);
 ImVec4 FRcolor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-bool DrawKolam::Init() {	
+bool DrawKolam::Init() {
 	bool pass = true;
 	if(!InitImGui()) {
 			printf("In draw kolam class imgui not initiliazed!");
@@ -16,9 +16,31 @@ bool DrawKolam::Init() {
 		pass = false;
 	}
 	else {
+		/*bool f=false;
 
+		int * CurrSprite;
+		if(butts!=nullptr)
+		{
+			int l=(sizeof(butts)/sizeof(butts[0]));
+
+			CurrSprite=new int[l];
+			for (int i=0; i<l; i++ )
+			{
+				CurrSprite[i] = butts[i].GetSprite();	
+			}
+			f=true;
+		}*/
 		butts = new KolamButton[TOTAL_BUTTONS];
 		DrawButtons();
+
+		/*if(f)
+		{
+			int l=(sizeof(CurrSprite)/sizeof(CurrSprite[0]));
+			for (int i=0; i<l; i++ )
+			{
+				butts[i].ChangeSprite(CurrSprite[i]);	
+			}
+		}*/
 	}
 	return pass;
 	
