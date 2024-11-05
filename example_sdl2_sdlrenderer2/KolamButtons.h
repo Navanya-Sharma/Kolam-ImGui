@@ -4,6 +4,8 @@
 #include "Texture.h"
 
 extern SDL_Color ButtonStateColors[4];
+
+
 enum buttonType {
 	top,
 	right,

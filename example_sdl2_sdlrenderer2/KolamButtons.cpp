@@ -69,7 +69,7 @@ void KolamButton::Render(ImVec4 BGcolor) {
 	case bottom: case top:
 		sheetUD.Render(pos.x, pos.y, &ImgUD[cur], bw, bh, place * 90.0);break;
 	}
-
+	
 	//Set Border
 	SDL_SetRenderDrawColor(gRenderer, borderColor.r, borderColor.g, borderColor.b, 0xFF);
 	SDL_RenderDrawRect(gRenderer, &a);

@@ -5,7 +5,7 @@
 #include "Texture.h"
 #include "core.h"
 
-Texture dot, sheetUD, sheetLR;
+Texture dot, sheetUD, sheetLR, Final;
 
 Texture::Texture() {
 	text = NULL;
@@ -81,7 +81,7 @@ void Texture::Render(int x, int y, SDL_Rect* clip, int desW, int desH, double an
 		des.h = ht;
 	}
  	if (SDL_RenderCopyEx(gRenderer, text, clip, &des, angle, center, flip) != 0) {
-		printf("Could not Render Texture Eror: %s\n", SDL_GetError());
+		//printf("Could not Render Texture Eror: %s\n", SDL_GetError());
 	}
 }
 
@@ -91,6 +91,46 @@ int Texture::GetHeight() {
 
 int Texture::GetWidth() {
 	return wd;
+}
+
+bool Texture::SaveImage() {
+
+
+	// Create an empty surface with the same dimensions as the texture
+	SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormat(0, wd, ht, 32, SDL_PIXELFORMAT_RGBA32);
+	if (!surface) {
+		SDL_Log("Failed to create surface: %s", SDL_GetError());
+		return false;
+	}
+
+	// Render the texture to the surface
+	if (SDL_SetRenderTarget(gRenderer, text) != 0) {
+		SDL_Log("Failed to set render target: %s", SDL_GetError());
+		SDL_FreeSurface(surface);
+		return false;
+	}
+
+	if (SDL_RenderReadPixels(gRenderer, nullptr, SDL_PIXELFORMAT_RGBA32, surface->pixels, surface->pitch) != 0) {
+		SDL_Log("Failed to read pixels: %s", SDL_GetError());
+		SDL_FreeSurface(surface);
+		return false;
+	}
+
+	// Reset the render target to the default
+	SDL_SetRenderTarget(gRenderer, nullptr);
+
+	// Save the surface as a PNG file
+	// Name as the output name
+	if (IMG_SavePNG(surface,"a.png") != 0) {
+		SDL_Log("Failed to save PNG: %s", IMG_GetError());
+		SDL_FreeSurface(surface);
+		return false;
+	}
+
+	// Free the surface
+	SDL_FreeSurface(surface);
+
+	return true;
 }
 
 /*bool Texture::LoadFromRenderedText(std::string textureText, SDL_Color textColor, int textWidth, int bold) {
@@ -332,4 +372,5 @@ bool MakeSheetLR(ImVec4 color) {
 	}
 	return pass;
 }
+
 

@@ -17,6 +17,7 @@ public:
 	//int ActiveButtonID();
 };
 
+bool ExportKolam();
 void DrawButtons();
 void RenderButtons();
 void GlobalDec();

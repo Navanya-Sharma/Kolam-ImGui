@@ -3,6 +3,7 @@
 
 #include "IconsFontAwesome.h"
 int pev = 0;
+int PREV_TOTAL_BUTTONS = 0;
 ImVec4 BGcolor = ImVec4(0.796078f, 0.407843f, 0.262745f, 1.00f);
 ImVec4 FRcolor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 bool DrawKolam::Init() {
@@ -16,31 +17,29 @@ bool DrawKolam::Init() {
 		pass = false;
 	}
 	else {
-		/*bool f=false;
 
 		int * CurrSprite;
-		if(butts!=nullptr)
+		if (PREV_TOTAL_BUTTONS > TOTAL_BUTTONS) {
+			PREV_TOTAL_BUTTONS = TOTAL_BUTTONS;
+		}
+		if(PREV_TOTAL_BUTTONS)
 		{
-			int l=(sizeof(butts)/sizeof(butts[0]));
-
-			CurrSprite=new int[l];
-			for (int i=0; i<l; i++ )
+			CurrSprite=new int[PREV_TOTAL_BUTTONS];
+			for (int i=0; i<PREV_TOTAL_BUTTONS; i++ )
 			{
 				CurrSprite[i] = butts[i].GetSprite();	
 			}
-			f=true;
-		}*/
+		}
 		butts = new KolamButton[TOTAL_BUTTONS];
 		DrawButtons();
 
-		/*if(f)
+		if(PREV_TOTAL_BUTTONS)
 		{
-			int l=(sizeof(CurrSprite)/sizeof(CurrSprite[0]));
-			for (int i=0; i<l; i++ )
+			for (int i=0; i<PREV_TOTAL_BUTTONS; i++ )
 			{
 				butts[i].ChangeSprite(CurrSprite[i]);	
 			}
-		}*/
+		}
 	}
 	return pass;
 	
@@ -191,17 +190,41 @@ void DrawKolam::Update() {
 		ImGui::EndPopup();
 	}
 	
+	//OPEN FOLDER
+	/*
 	if (ImGui::Button(ICON_FA_FOLDER_OPEN, ButtonSize))
 	{
 		Mix_PlayChannel(-1, buttSound, 0);
 	}
-	ImGui::SetItemTooltip("Open");
+	ImGui::SetItemTooltip("Open");*/
+
+	//EXPORT
+	static int a;
 	if (ImGui::Button(ICON_FA_FILE_ARROW_DOWN, ButtonSize))
 	{
 		Mix_PlayChannel(-1, buttSound, 0);
+		a = ExportKolam();
+		ImGui::OpenPopup("Saving Report");
+		
 	}
 	ImGui::SetItemTooltip("Save");
 
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+	if (ImGui::BeginPopupModal("Saving Report", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+		if (a) ImGui::Text("Saved to the current working directory");
+		else ImGui::Text("Couldn't Export the Design");
+
+		float popupWidth = ImGui::GetWindowWidth();
+		ImGui::Indent(popupWidth/2-100);
+		if (ImGui::Button("Okay!", ImVec2(200, 0))) {
+			ImGui::CloseCurrentPopup();
+			Mix_PlayChannel(-1, buttSound, 0);
+		}
+		ImGui::EndPopup();
+	}
+
+	// DELETE
 	if (ImGui::Button(ICON_FA_TRASH_CAN, ButtonSize))
 	{
 		ImGui::OpenPopup("Delete it?!");
@@ -209,7 +232,6 @@ void DrawKolam::Update() {
 	}
 	ImGui::SetItemTooltip("Delete");
 	
-	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	if (ImGui::BeginPopupModal("Delete it?!", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
@@ -265,6 +287,60 @@ void DrawKolam::HandleEvent(SDL_Event *e){
 		}
 		pev = i;
 	}
+}
+
+bool ExportKolam() {
+	
+	//Texture Final;
+	// 1) make  a local variable, remove from texture.h and .cpp
+	// 2) remove the comments from the if of render function in texture class
+	int borders = 50;
+	if (!Final.CreateBlankSheet(4*SPACE *ROWS +2*borders, 4*SPACE *COLS +2*borders, SDL_TEXTUREACCESS_TARGET)) {
+		printf("Failed to make dot sprite\n");
+		return false;
+	}
+	else {
+		Final.SetAsRenderTarget();
+		SDL_SetRenderDrawColor(gRenderer, (Uint8)(BGcolor.x * 255), (Uint8)(BGcolor.y * 255), (Uint8)(BGcolor.z * 255), (Uint8)(BGcolor.w * 255));
+
+		SDL_RenderClear(gRenderer);
+		SDL_SetRenderDrawColor(gRenderer, (Uint8)(FRcolor.x * 255), (Uint8)(FRcolor.y * 255), (Uint8)(FRcolor.z * 255), (Uint8)(FRcolor.w * 255));
+		
+		for (int ri = 0, x = 2 * SPACE + borders, i =0; ri < COLS; ri++, x += 4 * SPACE) {
+			for (int ci = 0, y = 2 * SPACE + borders;ci < ROWS; ci++, i += 4, y += 4 * SPACE) {
+			//Left
+			if(butts[i].GetSprite()!=2)
+			sheetLR.Render(x - 2 * SPACE, y - SPACE, &ImgLR[butts[i].GetSprite()], SPACE + THICK+1, 2*SPACE, 180.0);
+			//bottom
+			if (butts[i+1].GetSprite() != 2)
+			sheetUD.Render(x - 2 * SPACE, y + SPACE, &ImgUD[butts[i+1].GetSprite()], 4*SPACE, SPACE, 180.0);
+			//Right
+			if (butts[i+2].GetSprite() != 2)
+			sheetLR.Render(x + SPACE -THICK, y - SPACE, &ImgLR[butts[i+2].GetSprite()], SPACE + THICK+1, 2 * SPACE, 0);
+			//Top
+			if (butts[i+3].GetSprite() != 2)
+			sheetUD.Render(x - 2 * SPACE, y - 2 * SPACE, &ImgUD[butts[i + 3].GetSprite()], 4 * SPACE, SPACE, 0);
+
+			dot.Render(x - SPACE / 6, y - SPACE / 6);
+			
+			}
+		}
+		/*switch (place) {
+		case right: case left:
+			sheetLR.Render(pos.x, pos.y, &ImgLR[cur], bw, bh, (place - 1) * 90.0); break;
+		case bottom: case top:
+			sheetUD.Render(pos.x, pos.y, &ImgUD[cur], bw, bh, place * 90.0);break;
+		}*/
+
+		SDL_SetRenderTarget(gRenderer, NULL);
+
+		
+		return Final.SaveImage();
+
+
+
+	}
+
 }
 
 
@@ -426,6 +502,7 @@ bool InitImGui() {
 
 bool InitTextures() {
 	bool pass = true;
+	PREV_TOTAL_BUTTONS = TOTAL_BUTTONS;
 	GlobalDec();
 	if (MakeDot(FRcolor) && MakeSheetLR(FRcolor) && MakeSheetUD(FRcolor))
 	{

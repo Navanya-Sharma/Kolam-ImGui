@@ -14,6 +14,7 @@ class Texture{
 		int GetHeight();
 		int GetWidth();
 		void SetBlendMode(SDL_BlendMode a);
+		bool SaveImage();
 		//bool LoadFromRenderedText(std::string textureText, SDL_Color textColor, int textWidth, int bold = 0);
 
 	private:
@@ -23,7 +24,7 @@ class Texture{
 
 };
 
-extern Texture dot, sheetUD, sheetLR;
+extern Texture dot, sheetUD, sheetLR, Final;
 
 int SDL_RenderFillCircle(SDL_Renderer* renderer, int x, int y, int radius);
 int SDL_RenderDrawCircle(SDL_Renderer* renderer, int x, int y, int radius);

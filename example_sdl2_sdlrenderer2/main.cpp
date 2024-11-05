@@ -28,9 +28,11 @@ int main(int, char**){
         printf("Scene didnt change to PopUpMenu"); 
     else {
         bool done = false;
+
         while (!done)
         {
             SDL_Event event;
+            //printf("%d", SDL_PollEvent(&event));
             while (SDL_PollEvent(&event))
             {
                 
@@ -60,6 +62,7 @@ int main(int, char**){
 
             // Rendering
             gSceneManager.Render();
+            Final.Render(0,0);
             SDL_RenderPresent(gRenderer);
         }
     }
