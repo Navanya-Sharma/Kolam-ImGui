@@ -302,16 +302,13 @@ bool MakeSheetUD(ImVec4 color) {
 		//Draws the triangle
 		SDL_SetRenderDrawColor(gRenderer, (Uint8)(color.x * 255), (Uint8)(color.y * 255), (Uint8)(color.z * 255), (Uint8)(color.w * 255));
 
-		for (float x = SPACE;x < 2 * SPACE;x += 1) {
+		for (float x = SPACE+1;x < 2 * SPACE;x += 1) {
 			y = -x + 2 * SPACE;
 			rec.x = x - THICK / 2; rec.y = y;
 			SDL_RenderFillRect(gRenderer, &rec);
 		}
 		for (float x = 2 * SPACE;x < 3 * SPACE;x += 1) {
-
-
-
-
+			
 			y = x - 2 * SPACE;
 			rec.x = x - THICK / 2; rec.y = y;
 			SDL_RenderFillRect(gRenderer, &rec);
